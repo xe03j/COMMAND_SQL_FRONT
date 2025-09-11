@@ -36,6 +36,12 @@ const router = createRouter({
             }
         },
         {
+            path: '/empezar',
+            name: 'empezar_view',
+            component: () => import('@/views/Empezar_view.vue'),
+            meta: { requiresAuth: true }
+        },
+        {
             path: '/dashboard',
             component: AppLayout,
             children: [
@@ -47,84 +53,118 @@ const router = createRouter({
                     meta: { requiresAuth: true }
                 },
                 //_______________________________
-                //ASISTENCIA
+                //MISIONES
                 {
-                    path: '/asistencia/entrada',
-                    name: 'entrada',
-                    component: () => import('@/views/uikit/asistencia/Asistencia_entrada.vue'),
+                    path: '/mision/1',
+                    name: 'mision_1',
+                    component: () => import('@/views/uikit/misiones/mision_1.vue'),
                     meta: { requiresAuth: true }
                 },
                 {
-                    path: '/asistencia/salida',
-                    name: 'salida',
-                    component: () => import('@/views/uikit/asistencia/Asistencia_Salida.vue'),
+                    path: '/mision/2',
+                    name: 'mision_2',
+                    component: () => import('@/views/uikit/misiones/mision_2.vue'),
                     meta: { requiresAuth: true }
                 },
+                {
+                    path: '/mision/3',
+                    name: 'mision_3',
+                    component: () => import('@/views/uikit/misiones/mision_3.vue'),
+                    meta: { requiresAuth: true }
+                },
+                {
+                    path: '/mision/4',
+                    name: 'mision_4',
+                    component: () => import('@/views/uikit/misiones/mision_4.vue'),
+                    meta: { requiresAuth: true }
+                },
+                {
+                    path: '/mision/5',
+                    name: 'mision_5',
+                    component: () => import('@/views/uikit/misiones/mision_5.vue'),
+                    meta: { requiresAuth: true }
+                },
+                {
+                    path: '/mision/6',
+                    name: 'mision_6',
+                    component: () => import('@/views/uikit/misiones/mision_6.vue'),
+                    meta: { requiresAuth: true }
+                },
+                {
+                    path: '/mision/7',
+                    name: 'mision_7',
+                    component: () => import('@/views/uikit/misiones/mision_7.vue'),
+                    meta: { requiresAuth: true }
+                },
+                {
+                    path: '/mision/8',
+                    name: 'mision_8',
+                    component: () => import('@/views/uikit/misiones/mision_8.vue'),
+                    meta: { requiresAuth: true }
+                },
+                {
+                    path: '/mision/9',
+                    name: 'mision_9',
+                    component: () => import('@/views/uikit/misiones/mision_9.vue'),
+                    meta: { requiresAuth: true }
+                },
+                {
+                    path: '/mision/10',
+                    name: 'mision_10',
+                    component: () => import('@/views/uikit/misiones/mision_10.vue'),
+                    meta: { requiresAuth: true }
+                },
+                {
+                    path: '/mision/11',
+                    name: 'mision_11',
+                    component: () => import('@/views/uikit/misiones/mision_11.vue'),
+                    meta: { requiresAuth: true }
+                },
+                {
+                    path: '/mision/12',
+                    name: 'mision_12',
+                    component: () => import('@/views/uikit/misiones/mision_12.vue'),
+                    meta: { requiresAuth: true }
+                },
+                {
+                    path: '/mision/13',
+                    name: 'mision_13',
+                    component: () => import('@/views/uikit/misiones/mision_13.vue'),
+                    meta: { requiresAuth: true }
+                },
+                {
+                    path: '/mision/14',
+                    name: 'mision_14',
+                    component: () => import('@/views/uikit/misiones/mision_14.vue'),
+                    meta: { requiresAuth: true }
+                },
+                {
+                    path: '/mision/15',
+                    name: 'mision_15',
+                    component: () => import('@/views/uikit/misiones/mision_15.vue'),
+                    meta: { requiresAuth: true }
+                },
+                {
+                    path: '/mision/16',
+                    name: 'mision_16',
+                    component: () => import('@/views/uikit/misiones/mision_16.vue'),
+                    meta: { requiresAuth: true }
+                },
+
                 //_______________________________
-                // Rutas solo accesibles por admin
-                //USUARIOS
+                //MANUAL
                 {
-                    path: '/usuario/usuariobuscar',
-                    name: 'usuariosbuscar',
-                    component: () => import('@/views/uikit/usuarios/UsuariosBuscar.vue'),
-                    meta: { requiresAuth: true, requiresAdmin: true }
-                },
-                {
-                    path: '/usuario/usuariocrear',
-                    name: 'usuarioscrear',
-                    component: () => import('@/views/uikit/usuarios/UsuariosCreate.vue'),
-                    meta: { requiresAuth: true, requiresAdmin: true }
-                },
-                {
-                    path: '/usuario/usuarioeditar',
-                    name: 'usuarioseditar',
-                    component: () => import('@/views/uikit/usuarios/UsuariosEdit.vue'),
-                    meta: { requiresAuth: true, requiresAdmin: true }
-                },
-                {
-                    path: '/usuario/usuarioeliminar',
-                    name: 'usuarioseliminar',
-                    component: () => import('@/views/uikit/usuarios/UsuariosEliminar.vue'),
+                    path: '/manual/ayuda',
+                    name: 'verayuda',
+                    component: () => import('@/views/uikit/manual/manual.vue'),
                     meta: { requiresAuth: true, requiresAdmin: true }
                 },
                 //_______________________________
-                //MAESTROS
+                //LOGROS
                 {
-                    path: '/maestros/maestrobuscar',
-                    name: 'maestrobuscar',
-                    component: () => import('@/views/uikit/maestros/maestroBuscar.vue'),
-                    meta: { requiresAuth: true, requiresAdmin: true }
-                },
-                {
-                    path: '/maestros/maestrocrear',
-                    name: 'maestrocrear',
-                    component: () => import('@/views/uikit/maestros/maestroCrear.vue'),
-                    meta: { requiresAuth: true, requiresAdmin: true }
-                },
-                {
-                    path: '/maestros/maestroVerTodos',
-                    name: 'maestrovertodos',
-                    component: () => import('@/views/uikit/maestros/maestroVerTodos.vue'),
-                    meta: { requiresAuth: true, requiresAdmin: true }
-                },
-                //______________________________
-                //ALUMNOS
-                {
-                    path: '/alumnos/alumnobuscar',
-                    name: 'alumnobuscar',
-                    component: () => import('@/views/uikit/alumnos/alumnoBuscar.vue'),
-                    meta: { requiresAuth: true, requiresAdmin: true }
-                },
-                {
-                    path: '/alumnos/alumnocrear',
-                    name: 'alumnocrear',
-                    component: () => import('@/views/uikit/alumnos/alumnoCrear.vue'),
-                    meta: { requiresAuth: true, requiresAdmin: true }
-                },
-                {
-                    path: '/alumnos/alumnoVerTodos',
-                    name: 'alumnovertodos',
-                    component: () => import('@/views/uikit/alumnos/alumnoVerTodos.vue'),
+                    path: '/logros/todos',
+                    name: 'verlogros',
+                    component: () => import('@/views/uikit/logros/ListarLogros.vue'),
                     meta: { requiresAuth: true, requiresAdmin: true }
                 },
                 //_______________________________
@@ -132,7 +172,7 @@ const router = createRouter({
                 {
                     path: '/uikit/accionesultima',
                     name: 'accionesultima',
-                    component: () => import('@/views/uikit/reportes/AccionesUltima.vue'),
+                    component: () => import('@/views/uikit/reportes/verLogrosUser.vue'),
                     meta: { requiresAuth: true, requiresAdmin: true }
                 }
             ]

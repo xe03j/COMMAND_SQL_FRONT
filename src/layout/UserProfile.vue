@@ -5,20 +5,20 @@ import { useRouter } from 'vue-router';
 
 const user = ref(null);
 const router = useRouter();
+const token = localStorage.getItem('access_token');
 
-// 🔹 Cargar datos del usuario autenticado
+// 🔹 Cargar datos del usuario autenticado desde tu API
 onMounted(async () => {
     try {
-        const token = localStorage.getItem('access_token'); // Obtener el token de localStorage
-        const response = await axios.get('https://asistenciasimposio-api.onrender.com/auth/user/me', {
+        const response = await axios.get('http://127.0.0.1:8000/usuarios/me', {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         });
 
-        // Solo los datos disponibles en el endpoint
-        const { username, nombre, apellido_paterno, apellido_materno, role } = response.data;
-        user.value = { username, nombre, apellido_paterno, apellido_materno, role };
+        // Ajusta según lo que devuelve tu endpoint
+        const { email, nombre, apellido_paterno, apellido_materno, rol } = response.data;
+        user.value = { email, nombre, apellido_paterno, apellido_materno, rol };
     } catch (error) {
         console.error('Error al obtener los datos del usuario:', error);
     }
@@ -26,8 +26,8 @@ onMounted(async () => {
 
 // 🔹 Función para cerrar sesión
 const logout = () => {
-    localStorage.removeItem('access_token'); // Eliminar el token
-    router.push('/'); // Redirigir al login
+    localStorage.removeItem('access_token');
+    router.push('/');
 };
 </script>
 
@@ -41,8 +41,7 @@ const logout = () => {
         <div class="card-body">
             <h2 v-if="user">{{ user.nombre }} {{ user.apellido_paterno }} {{ user.apellido_materno }}</h2>
             <div v-if="user">
-                <p class="info"><strong>Usuario:</strong> {{ user.username }}</p>
-                <p class="info"><strong>Rol:</strong> {{ user.role }}</p>
+                <p class="info"><strong>Email:</strong> {{ user.email }}</p>
             </div>
             <div v-else>
                 <p>Cargando información del usuario...</p>
@@ -55,23 +54,24 @@ const logout = () => {
 <style scoped>
 .user-card {
     width: 320px;
-    background: white;
+    background: #000; /* 🔹 Fondo negro */
     border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 255, 0, 0.2); /* Verde sutil */
     overflow: hidden;
     font-family: 'Arial', sans-serif;
     text-align: center;
     margin: 20px auto;
     transition: transform 0.3s ease-in-out;
+    border: 1px solid #0f0; /* 🔹 Borde verde */
 }
 
 .user-card:hover {
     transform: translateY(-5px);
 }
 
-/* 🔹 Azul UNACH en el encabezado */
+/* Encabezado con degradado negro-verde */
 .card-header {
-    background: linear-gradient(135deg, #003366, #0055a4);
+    background: linear-gradient(135deg, #000, #004400);
     padding: 20px 0;
 }
 
@@ -83,10 +83,10 @@ const logout = () => {
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background-color: white;
-    color: #003366; /* Azul UNACH */
+    background-color: black;
+    color: #0f0; /* Verde */
     font-size: 4rem;
-    border: 4px solid white;
+    border: 4px solid #0f0;
 }
 
 .card-body {
@@ -97,38 +97,43 @@ const logout = () => {
     margin: 10px 0;
     font-size: 1.5em;
     font-weight: bold;
-    color: #003366; /* Azul UNACH */
+    color: white; /* 🔹 Nombre en blanco */
 }
 
 .card-body .info {
     margin: 5px 0;
     font-size: 1em;
-    color: #666;
+    color: #bbb; /* Gris claro */
 }
 
-/* 🔹 Botón con colores UNACH */
+.card-body strong {
+    color: #0f0; /* Verde para etiquetas */
+}
+
+/* Botón en verde */
 .logout-btn {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
     padding: 10px 20px;
-    background-color: #c9a227; /* Dorado UNACH */
-    color: white;
+    background-color: #0f0;
+    color: black;
     font-size: 1em;
     font-weight: bold;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     margin-top: 15px;
-    transition: background-color 0.3s ease-in-out;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
 .logout-btn i {
     font-size: 1.2em;
 }
 
-/* 🔹 Hover con dorado más oscuro */
+/* Hover más brillante */
 .logout-btn:hover {
-    background-color: #b8961e; /* Dorado UNACH más oscuro */
+    background-color: #00ff66;
+    color: black;
 }
 </style>

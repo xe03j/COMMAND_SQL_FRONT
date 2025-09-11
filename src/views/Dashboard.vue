@@ -1,227 +1,205 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import image6 from '@/assets/image6.png';
 
-const nombreCompleto = ref('');
-const totalAsistenciaCarrera = ref([]);
-const asistenciaGenero = ref({ total_hombres: 0, total_mujeres: 0 });
-const tiempoReal = ref(0);
-const faltantesSalida = ref(0);
-const faltantesEvento = ref(0);
+const niveles = ref([]);
+const usuario = ref(null);
+const progreso = ref(0);
 
-// Obtener token JWT desde localStorage
-const obtenerToken = () => localStorage.getItem('access_token');
+const token = localStorage.getItem('access_token');
 
-// Función para obtener los datos del usuario
+const ordenDificultad = ['Fácil', 'Medio', 'Difícil', 'Experto'];
+
+const obtenerNiveles = async () => {
+    try {
+        const response = await axios.get('http://127.0.0.1:8000/niveles/ver', {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        niveles.value = response.data.sort((a, b) => {
+            return ordenDificultad.indexOf(a.dificultad) - ordenDificultad.indexOf(b.dificultad);
+        });
+    } catch (error) {
+        console.error('Error al obtener niveles:', error);
+    }
+};
+
 const obtenerUsuario = async () => {
     try {
-        const token = obtenerToken();
-        const response = await axios.get('https://asistenciasimposio-api.onrender.com/auth/user/me', {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
+        const response = await axios.get('http://127.0.0.1:8000/usuarios/me', {
+            headers: { Authorization: `Bearer ${token}` }
         });
+        usuario.value = response.data;
 
-        const { nombre, username } = response.data;
-        nombreCompleto.value = `${nombre} ` || username;
-
-        // Obtener los datos de asistencia
-        await obtenerAsistenciaPorCarrera(token);
-        await obtenerAsistenciaPorGenero(token);
-        await obtenerTiempoReal(token);
-        await obtenerFaltantesSalida(token);
-        await obtenerFaltantesEvento(token);
+        // calcular progreso con base en 96 xp = 100%
+        progreso.value = Math.min((usuario.value.xp_total / 96) * 100, 100);
     } catch (error) {
-        console.error('Error al obtener el usuario:', error);
-        nombreCompleto.value = 'Usuario desconocido';
+        console.error('Error al obtener usuario:', error);
     }
 };
 
-// 📊 Obtener el total de asistentes por carrera (del día actual)
-const obtenerAsistenciaPorCarrera = async (token) => {
-    try {
-        const response = await axios.get('https://asistenciasimposio-api.onrender.com/asistencia/reporte/total-carrera/hoy', {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
-        totalAsistenciaCarrera.value = response.data.detalle;
-    } catch (error) {
-        console.error('Error al obtener asistencia por carrera:', error);
-        totalAsistenciaCarrera.value = [];
-    }
-};
-
-// 📊 Obtener la asistencia por género (Hombres y Mujeres) del día actual
-const obtenerAsistenciaPorGenero = async (token) => {
-    try {
-        const response = await axios.get('https://asistenciasimposio-api.onrender.com/asistencia/reporte/genero/hoy', {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
-        asistenciaGenero.value = response.data;
-    } catch (error) {
-        console.error('Error al obtener asistencia por género:', error);
-        asistenciaGenero.value = { total_hombres: 0, total_mujeres: 0 };
-    }
-};
-
-// 📊 Obtener asistentes en tiempo real
-const obtenerTiempoReal = async (token) => {
-    try {
-        const response = await axios.get('https://asistenciasimposio-api.onrender.com/asistencia/reporte/tiempo-real', {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
-        tiempoReal.value = response.data.total_asistentes;
-    } catch (error) {
-        console.error('Error al obtener asistentes en tiempo real:', error);
-        tiempoReal.value = 0;
-    }
-};
-
-// 📊 Obtener cuántos alumnos aún no han registrado su salida
-const obtenerFaltantesSalida = async (token) => {
-    try {
-        const response = await axios.get('https://asistenciasimposio-api.onrender.com/asistencia/reporte/faltantes-salida/hoy', {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
-        faltantesSalida.value = response.data.total_faltantes;
-    } catch (error) {
-        console.error('Error al obtener faltantes de salida:', error);
-        faltantesSalida.value = 0;
-    }
-};
-
-// 📊 Obtener cuántos alumnos faltaron al evento en el día actual
-const obtenerFaltantesEvento = async (token) => {
-    try {
-        const fechaHoy = new Date().toISOString().split('T')[0]; // Formatear fecha YYYY-MM-DD
-        const response = await axios.get(`https://asistenciasimposio-api.onrender.com/asistencia/reporte/faltantes-evento?fecha=${fechaHoy}`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
-        faltantesEvento.value = response.data.total_faltantes;
-    } catch (error) {
-        console.error('Error al obtener faltantes del evento:', error);
-        faltantesEvento.value = 0;
-    }
-};
-
-// Cargar datos al montar el componente
 onMounted(() => {
+    obtenerNiveles();
     obtenerUsuario();
 });
 </script>
 
 <template>
-    <div class="dashboard">
-        <!-- Mensaje de bienvenida -->
-        <div class="welcome">
-            <h1>¡Bienvenido/a, {{ nombreCompleto }}!</h1>
-            <h2>Panel de Estadísticas de Asistencia - Simposio Internacional</h2>
+    <div class="niveles-container">
+        <!-- Fondo -->
+        <div class="background">
+            <img :src="image6" alt="Fondo" />
+            <div class="overlay"></div>
         </div>
 
-        <!-- Contenedor de tarjetas e imagen -->
-        <div class="content-container">
-            <div class="cards-container">
-                <div class="card">
-                    <h3>Asistencia por Carrera (Hoy)</h3>
-                    <ul v-if="totalAsistenciaCarrera.length > 0">
-                        <li v-for="carrera in totalAsistenciaCarrera" :key="carrera.carrera">
-                            <strong>{{ carrera.carrera }}</strong
-                            >: {{ carrera.total_asistentes }} asistentes
-                        </li>
-                    </ul>
-                    <p v-else>No hay registros de asistencia hoy.</p>
-                </div>
+        <!-- Contenido -->
+        <h1 class="titulo md:text-7xl">Panel de Control</h1>
+        <p class="intro">Bienvenido cadete, aquí tienes los niveles y tu progreso.</p>
 
-                <div class="card">
-                    <h3>Asistencia por Género (Hoy)</h3>
-                    <p><strong>Hombres:</strong> {{ asistenciaGenero.total_hombres }}</p>
-                    <p><strong>Mujeres:</strong> {{ asistenciaGenero.total_mujeres }}</p>
-                </div>
-                <div class="card">
-                    <h3>Asistentes en Tiempo Real</h3>
-                    <p class="text-large">{{ tiempoReal }}</p>
-                </div>
-                <div class="card">
-                    <h3>Alumnos sin salida registrada</h3>
-                    <p class="text-large">{{ faltantesSalida }}</p>
-                </div>
-                <div class="card">
-                    <h3>Alumnos que faltaron al evento</h3>
-                    <p class="text-large">{{ faltantesEvento }}</p>
-                </div>
+        <!-- 🟢 Barra de progreso -->
+        <div v-if="usuario" class="progress-container">
+            <span class="progress-text">🚀 Progreso de juego: {{ Math.floor(progreso) }}%</span>
+            <div class="progress-bar">
+                <div class="progress-fill" :style="{ width: progreso + '%' }"></div>
             </div>
-            <div class="image-container">
-                <img src="@/assets/logocelote.jpg" alt="Simposio" />
+        </div>
+
+        <div class="grid">
+            <div v-for="nivel in niveles" :key="nivel.id_nivel" class="card">
+                <h2 class="nivel-titulo">{{ nivel.titulo }}</h2>
+                <p class="nivel-descripcion">{{ nivel.descripcion }}</p>
+
+                <div class="info">
+                    <span class="tag">🎯 {{ nivel.tema_sql }}</span>
+                    <span class="dificultad">⚡ {{ nivel.dificultad }}</span>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <style scoped>
-.dashboard {
+.niveles-container {
+    position: relative;
+    min-height: 100vh;
     padding: 2rem;
+    font-family: 'Press Start 2P', sans-serif;
     text-align: center;
+    color: #fff;
+    z-index: 10;
 }
 
-.welcome h1 {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: #003366;
+.background {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
 }
 
-.welcome h2 {
-    font-size: 1.5rem;
-    font-weight: 400;
-    color: #c9a227;
+.background img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.content-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 2rem;
-    margin-top: 2rem;
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
 }
 
-.cards-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+.titulo {
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+    color: #15ff73;
+    text-shadow: 0 0 12px #15ff73, 0 0 25px #00ff66;
 }
 
-.image-container {
-    display: flex;
-    align-items: center;
+.intro {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    max-width: 900px;
+    margin-inline: auto;
+    line-height: 1.8;
+    color: #ffffff;
 }
 
-.image-container img {
-    width: 490px;
-    height: auto;
+/* Barra de progreso */
+.progress-container {
+    margin: 1.5rem auto 3rem;
+    max-width: 500px;
+    text-align: left;
+}
+
+.progress-text {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 1.4rem;
+    color: #15ff73;
+    text-shadow: 0 0 10px #15ff73;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 18px;
+    background: rgba(255, 255, 255, 0.15);
     border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    box-shadow: 0 0 8px rgba(21, 255, 115, 0.3);
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #15ff73, #00ffcc);
+    transition: width 0.4s ease;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
 }
 
 .card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
     padding: 1.5rem;
-    border-radius: 10px;
-    background: white;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
-    text-align: center;
-    width: 350px;
+    text-align: left;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 0 20px rgba(21, 255, 115, 0.2);
 }
 
-.text-large {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: #c9a227;
+.card:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 0 25px rgba(21, 255, 115, 0.5);
+}
+
+.nivel-titulo {
+    font-size: 16px;
+    margin-bottom: 1rem;
+    color: #15ff73;
+}
+
+.nivel-descripcion {
+    font-size: 12px;
+    line-height: 1.4rem;
+    margin-bottom: 1rem;
+}
+
+.info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+}
+
+.tag {
+    background: #1e293b;
+    padding: 0.3rem 0.6rem;
+    border-radius: 8px;
+    color: #38bdf8;
+}
+
+.dificultad {
+    color: #facc15;
 }
 </style>

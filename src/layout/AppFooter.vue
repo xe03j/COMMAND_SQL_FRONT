@@ -13,7 +13,7 @@ const logoUrl = computed(() => {
 <template>
     <div class="layout-footer">
         <img :src="logoUrl" alt="Logo" class="logo-image" />
-        <span class="font-medium ml-2">Facultad de Negocios C-IV</span>
+        <span class="font-medium ml-2">Command SQL</span>
     </div>
 </template>
 

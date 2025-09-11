@@ -3,13 +3,13 @@ import { useAuth } from '@/composables/useAuth';
 import axios from 'axios';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import Button from 'primevue/button';
-import InputText from 'primevue/inputtext';
-import Password from 'primevue/password';
-import logounach from '@/assets/logosunach.jpg';
-import nImage from '@/assets/banner.jpg';
+import "@fontsource/press-start-2p"; // Importa toda la fuente
 
-// Hooks y variables reactivas
+// Importa imágenes desde assets
+import bg from '@/assets/background.png';
+import overlay from '@/assets/pngwing2.png';
+
+// Variables reactivas
 const { setToken } = useAuth();
 const email = ref('');
 const password = ref('');
@@ -20,100 +20,97 @@ const handleLogin = async () => {
     errorMessage.value = '';
 
     if (!email.value.trim() || !password.value.trim()) {
-        errorMessage.value = 'Por favor, completa todos los campos.';
+        errorMessage.value = 'Cadete, completa todos los campos.';
         return;
     }
 
     try {
-        // 🔹 Petición al backend para obtener el token
         const formData = new URLSearchParams();
         formData.append('username', email.value.trim());
         formData.append('password', password.value.trim());
 
-        const loginResponse = await axios.post('https://asistenciasimposio-api.onrender.com/auth/login', formData, {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-        });
+        const loginResponse = await axios.post('http://127.0.0.1:8000/auth/login', formData, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } });
 
-        // Extraer el token de la respuesta
         const { access_token } = loginResponse.data;
-
-        // Decodificar el token para obtener el rol
-        const payloadBase64 = access_token.split('.')[1];
-        const payloadDecoded = JSON.parse(atob(payloadBase64));
-        const role = payloadDecoded.role || 'usuario';
-
-        // Guardar token y rol en localStorage
         setToken(access_token);
-        localStorage.setItem('user_role', role);
 
-        console.log('Token guardado:', access_token);
-        console.log('Rol guardado en localStorage:', role);
-
-        // 🔹 Redirigir al dashboard o recargar la página
-        router.push('/dashboard');
+        router.push('/empezar');
     } catch (error) {
         if (error.response) {
-            console.error('Error en la respuesta del login:', error.response.data);
-            errorMessage.value = error.response.data.detail || 'Credenciales incorrectas.';
+            errorMessage.value = error.response.data.detail || 'Houston, tenemos un error de autenticación.';
         } else {
-            errorMessage.value = 'Error en la conexión. Intenta más tarde.';
+            errorMessage.value = 'Ups, Houston hubo error en la conexión. Intenta más tarde.';
         }
     }
 };
 </script>
 
 <template>
-    <div class="relative bg-cover bg-center bg-fixed min-h-screen min-w-[100vw]" :style="{ backgroundImage: `url(${nImage})` }">
-        <div class="absolute inset-0 bg-black opacity-50"></div>
+    <div class="relative w-full min-h-screen bg-black font-press flex items-center justify-center overflow-hidden">
+        <!-- Fondo -->
+        <img :src="bg" alt="background" class="absolute inset-0 w-full h-full object-cover" />
+        <img :src="overlay" alt="overlay" class="absolute inset-0 w-full h-full object-contain opacity-80" />
 
-        <div class="relative flex flex-col items-center justify-center min-h-screen">
-            <div style="border-radius: 56px; padding: 0.3rem; background: linear-gradient(180deg, rgb(0, 51, 102) 10%, rgb(201, 162, 39) 70%)">
-                <div class="w-full bg-white py-8 px-8 sm:px-20" style="border-radius: 53px">
-                    <div class="text-center mb-5">
-                        <img :src="logounach" alt="Logo Bienestar" class="mb-8 w-45 h-auto mx-auto" />
-                        <div class="text-900 text-3xl font-medium mb-3">Facultad de Negocios</div>
-                        <div class="text-900 text-3xl font-medium mb-3">Simposio Internacional</div>
-                        <span class="text-600 font-medium">Inicia sesión para continuar</span>
-                    </div>
+        <!-- Contenedor principal -->
+        <div class="relative z-10 flex flex-col items-center w-full max-w-3xl px-6">
+            <!-- SELECT * FROM GUAYABAS -->
+            <div class="mb-10 text-center">
+                <h2 class="typing text-green-400 text-4xl md:text-6xl lg:text-8xl font-['Press_Start_2P'] drop-shadow-[0_0_20px_#15ff73]">SELECT * FROM SQL;</h2>
+            </div>
 
-                    <div>
-                        <label for="usuario" class="block text-900 text-xl font-medium mb-2">Usuario</label>
-                        <InputText id="usuario" type="text" placeholder="Usuario" class="w-full md:w-[30rem] mb-5" v-model="email" />
+            <!-- Recuadro de login -->
+            <div class="backdrop-blur-xl rounded-2xl border-4 border-green-400 bg-black/70 shadow-lg shadow-green-500/40 w-full py-12 px-8 space-y-6">
+                <!-- Título -->
+                <h1 class="text-center text-3xl md:text-4xl font-['Press_Start_2P'] text-green-400 drop-shadow-[0_0_15px_#15ff73] mb-6">INICIO DE SESIÓN</h1>
 
-                        <label for="contraseña" class="block text-900 font-medium text-xl mb-2">Contraseña</label>
-                        <Password id="contraseña" v-model="password" placeholder="Contraseña" :toggleMask="true" class="w-full md:w-[30rem] mb-5" inputClass="w-full" :inputStyle="{ padding: '1rem' }"></Password>
+                <!-- Inputs -->
+                <div class="space-y-4">
+                    <input v-model="email" type="text" placeholder="Email" class="w-full px-4 py-3 rounded-xl bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-400 font-['Press_Start_2P']" />
 
-                        <Button label="Ingresar" class="w-full p-button p-button-text custom-button" @click="handleLogin"></Button>
-
-                        <div v-if="errorMessage" class="text-red-500 mt-2">{{ errorMessage }}</div>
-                    </div>
+                    <input v-model="password" type="password" placeholder="Contraseña" class="w-full px-4 py-3 rounded-xl bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-400 font-['Press_Start_2P']" />
                 </div>
+
+                <!-- Botones -->
+                <div class="flex flex-col sm:flex-row gap-4 mt-6">
+                    <button @click="handleLogin" class="flex-1 flex items-center justify-center gap-2 h-14 px-6 bg-green-500 text-black text-lg font-['Press_Start_2P'] rounded-xl shadow-lg shadow-green-400/40 hover:bg-green-600 hover:scale-105 transition-all">
+                        Iniciar sesión
+                    </button>
+
+                    <button class="flex-1 flex items-center justify-center gap-2 h-14 px-6 bg-gray-700 text-white text-lg font-['Press_Start_2P'] rounded-xl shadow-lg hover:bg-gray-600 hover:scale-105 transition-all">Registrarse</button>
+                </div>
+
+                <!-- Error -->
+                <div v-if="errorMessage" class="mt-4 px-4 py-2 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400 text-center">🚨 {{ errorMessage }}</div>
             </div>
         </div>
     </div>
 </template>
 
 <style scoped>
-.custom-button {
-    background-color: #003366 !important; /* Azul UNACH */
-    color: white !important;
-    border: none !important;
-    transition: background-color 0.3s ease !important;
+
+@keyframes typing {
+    0% {
+        width: 0ch;
+    }
+    50% {
+        width: 21ch;
+    }
+    100% {
+        width: 0ch;
+    }
 }
 
-.custom-button:hover {
-    background-color: #c9a227 !important; /* Dorado UNACH */
+@keyframes blink {
+    50% {
+        border-color: transparent;
+    }
 }
 
-.bg-cover {
-    background-size: cover;
-}
-
-.bg-center {
-    background-position: center;
-}
-
-.bg-fixed {
-    background-attachment: fixed;
+.typing {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 4px solid #15ff73;
+    animation: typing 10s steps(25, end) infinite, blink 1s step-end infinite;
 }
 </style>

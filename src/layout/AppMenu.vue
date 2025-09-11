@@ -2,8 +2,6 @@
 import { ref } from 'vue';
 import AppMenuItem from './AppMenuItem.vue';
 
-const role = localStorage.getItem('user_role') || 'capturista'; // Obtiene el rol del usuario
-
 const model = ref([
     {
         label: 'Principal',
@@ -13,59 +11,106 @@ const model = ref([
         label: 'Apartados',
         items: [
             {
-                label: 'Asistencia',
+                label: 'Misiones',
                 icon: 'pi pi-fw pi-briefcase',
                 items: [
                     {
-                        label: 'Registar Entrada',
+                        label: 'Mision 1',
                         icon: 'pi pi-fw pi-file-edit',
-                        to: '/asistencia/entrada'
+                        to: '/mision/1'
                     },
                     {
-                        label: 'Registrar Salida',
+                        label: 'Mision 2',
                         icon: 'pi pi-fw pi-file-edit',
-                        to: '/asistencia/salida'
+                        to: '/mision/2'
+                    },
+                    {
+                        label: 'Mision 3',
+                        icon: 'pi pi-fw pi-file-edit',
+                        to: '/mision/3'
+                    },
+                    {
+                        label: 'Mision 4',
+                        icon: 'pi pi-fw pi-file-edit',
+                        to: '/mision/4'
+                    },
+                    {
+                        label: 'Mision 5',
+                        icon: 'pi pi-fw pi-file-edit',
+                        to: '/mision/5'
+                    },
+                    {
+                        label: 'Mision 6',
+                        icon: 'pi pi-fw pi-file-edit',
+                        to: '/mision/6'
+                    },
+                    {
+                        label: 'Mision 7',
+                        icon: 'pi pi-fw pi-file-edit',
+                        to: '/mision/7'
+                    },
+                    {
+                        label: 'Mision 8',
+                        icon: 'pi pi-fw pi-file-edit',
+                        to: '/mision/8'
+                    },
+                    {
+                        label: 'Mision 9',
+                        icon: 'pi pi-fw pi-file-edit',
+                        to: '/mision/9'
+                    },
+                    {
+                        label: 'Mision 10',
+                        icon: 'pi pi-fw pi-file-edit',
+                        to: '/mision/10'
+                    },
+                    {
+                        label: 'Mision 11',
+                        icon: 'pi pi-fw pi-file-edit',
+                        to: '/mision/11'
+                    },
+                    {
+                        label: 'Mision 12',
+                        icon: 'pi pi-fw pi-file-edit',
+                        to: '/mision/12'
+                    },
+                    {
+                        label: 'Mision 13',
+                        icon: 'pi pi-fw pi-file-edit',
+                        to: '/mision/13'
+                    },
+                    {
+                        label: 'Mision 14',
+                        icon: 'pi pi-fw pi-file-edit',
+                        to: '/mision/14'
+                    },
+                    {
+                        label: 'Mision 15',
+                        icon: 'pi pi-fw pi-file-edit',
+                        to: '/mision/15'
+                    },
+                    {
+                        label: 'Mision 16',
+                        icon: 'pi pi-fw pi-file-edit',
+                        to: '/mision/16'
                     }
                 ]
             },
-            ...(role === 'admin'
-                ? [
-                      // Solo mostrar si el usuario es admin
-                      {
-                          label: 'Usuarios',
-                          icon: 'pi pi-fw pi-user',
-                          items: [
-                              { label: 'Buscar Usuario', icon: 'pi pi-fw pi-search', to: '/usuario/usuariobuscar' },
-                              { label: 'Agregar Usuario', icon: 'pi pi-fw pi-user-plus', to: '/usuario/usuariocrear' }, // Usuario con "+" (Agregar)
-                              { label: 'Editar Usuario', icon: 'pi pi-fw pi-user-edit', to: '/usuario/usuarioeditar' }, // Usuario con lápiz (Editar)
-                              { label: 'Eliminar Usuario', icon: 'pi pi-fw pi-user-minus', to: '/usuario/usuarioeliminar' } // Usuario con "-" (Eliminar)
-                          ]
-                      },
-                      {
-                          label: 'Maestros',
-                          icon: 'pi pi-fw pi-users',
-                          items: [
-                              { label: 'Buscar Maestro', icon: 'pi pi-fw pi-search', to: '/maestros/maestrobuscar' },
-                              { label: 'Ver Maestros', icon: 'pi pi-fw pi-search', to: '/maestros/maestroVerTodos' }, // Usuario con "-" (Eliminar)
-                              { label: 'Agregar Maestro', icon: 'pi pi-fw pi-user-plus', to: '/maestros/maestrocrear' }, // Usuario con "+" (Agregar)
-                          ]
-                      },
-                      {
-                          label: 'Alumnos',
-                          icon: 'pi pi-fw pi-users',
-                          items: [
-                              { label: 'Buscar Alumno', icon: 'pi pi-fw pi-search', to: '/alumnos/alumnobuscar' },
-                              { label: 'Ver Alumnos', icon: 'pi pi-fw pi-search', to: '/alumnos/alumnoVerTodos' }, // Usuario con "-" (Eliminar)
-                              { label: 'Agregar Alumno', icon: 'pi pi-fw pi-user-plus', to: '/alumnos/alumnocrear' }, // Usuario con "+" (Agregar)
-                          ]
-                      },
-                      {
-                          label: 'Reportes',
-                          icon: 'pi pi-fw pi-history',
-                          items: [{ label: 'Ver Acciones', icon: 'pi pi-fw pi-eye', to: '/uikit/accionesultima' }]
-                      }
-                  ]
-                : [])
+            {
+                label: 'Manual de Uso',
+                icon: 'pi pi-fw pi-users',
+                items: [{ label: 'Ayuda', icon: 'pi pi-fw pi-search', to: '/manual/ayuda' }]
+            },
+            {
+                label: 'Logros',
+                icon: 'pi pi-fw pi-users',
+                items: [{ label: 'Ver Logros', icon: 'pi pi-fw pi-search', to: '/logros/todos' }]
+            },
+            {
+                label: 'Reportes',
+                icon: 'pi pi-fw pi-history',
+                items: [{ label: 'Ver Acciones', icon: 'pi pi-fw pi-eye', to: '/uikit/accionesultima' }]
+            }
         ]
     }
 ]);
@@ -84,5 +129,18 @@ const model = ref([
 // Clase para íconos naranjas cuando está seleccionado
 .icon-orange {
     color: orange;
+}
+
+/* Contenedor principal del menú */
+ul.layout-menu {
+    background: transparent !important;
+    padding: 0;
+    margin: 0;
+}
+
+/* Separadores */
+.menu-separator {
+    background: transparent !important;
+    border: none;
 }
 </style>

@@ -88,7 +88,59 @@ const checkActiveRoute = (item) => {
             </ul>
         </Transition>
     </li>
-    
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+/* Contenedor principal de cada item */
+li.layout-root-menuitem {
+    background-color: transparent; // 🔹 Fondo transparente
+    margin-bottom: 6px;
+    border-radius: 6px;
+    font-family: 'Press Start 2P', sans-serif; // 🔹 Fuente nueva
+}
+
+/* Texto normal */
+.layout-menuitem-text {
+    color: #ffffff; // Blanco por defecto
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
+}
+
+/* Íconos */
+.layout-menuitem-icon {
+    color: #15ff73; // Verde neón
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+
+/* Hover → verde brillante */
+a:hover .layout-menuitem-text,
+a:hover .layout-menuitem-icon,
+.router-link:hover .layout-menuitem-text,
+.router-link:hover .layout-menuitem-icon {
+    color: #15ff73;
+    text-shadow: 0 0 8px #15ff73; // Glow verde
+}
+
+/* Activo → fondo verde transparente */
+.active-menuitem > a,
+.active-route {
+    background: rgba(21, 255, 115, 0.15); // Verde translúcido
+    border-radius: 6px;
+    color: #15ff73 !important;
+}
+
+.active-menuitem .layout-menuitem-icon,
+.active-route .layout-menuitem-icon {
+    color: #15ff73;
+}
+
+li.layout-root-menuitem,
+li.layout-root-menuitem > a,
+li.layout-root-menuitem > router-link,
+li.layout-root-menuitem ul.layout-submenu {
+  background: transparent !important;
+}
+
+</style>

@@ -9,8 +9,10 @@
         "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
     },
     "dependencies": {
+        "@fontsource/press-start-2p": "^5.2.6",
         "axios": "^1.6.0",
         "chart.js": "3.3.2",
+        "jwt-decode": "^4.0.0",
         "lucide-vue-next": "^0.479.0",
         "primeflex": "^3.3.1",
         "primeicons": "^6.0.1",

@@ -2,7 +2,7 @@
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useLayout } from '@/layout/composables/layout';
 import { useRouter } from 'vue-router';
-import logoImage from '@/assets/logo2.jpg';
+import logoImage from '@/assets/logo22.png';
 import UserProfile from '@/layout/UserProfile.vue'; // Importa el componente
 
 const { layoutConfig, onMenuToggle } = useLayout();
@@ -10,12 +10,14 @@ const outsideClickListener = ref(null);
 const topbarMenuActive = ref(false);
 const userMenuActive = ref(false);
 const router = useRouter();
+import '@fontsource/press-start-2p';
 
 onMounted(() => {
     bindOutsideClickListener();
 });
 
-onBeforeUnmount(() => {7
+onBeforeUnmount(() => {
+    7;
     unbindOutsideClickListener();
 });
 
@@ -64,7 +66,7 @@ const isOutsideClicked = (event) => {
         <div class="left-section">
             <router-link to="/" class="layout-topbar-logo">
                 <img :src="logoUrl" alt="logo" />
-                <span class="texto-blanco">Simposio Internacional</span>
+                <span class="texto-blanco font-['Press_Start_2P']" >Command SQL</span>
             </router-link>
             <button class="p-link layout-menu-button layout-topbar-button" @click="onMenuToggle()" style="color: white">
                 <i class="pi pi-bars"></i>
@@ -86,7 +88,7 @@ const isOutsideClicked = (event) => {
 
 <style lang="scss" scoped>
 .layout-topbar {
-    background-color: #003366; /* Azul UNACH */
+    background-color: #000000; /* Azul UNACH */
     display: flex;
     align-items: center;
     justify-content: space-between;
