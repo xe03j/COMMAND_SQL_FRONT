@@ -40,7 +40,8 @@ const handleLogin = async () => {
         }
 
         setToken(access_token);
-        router.push('/empezar');
+        router.push({ name: 'empezar_view' });
+
     } catch (error) {
         if (error.response) {
             errorMessage.value = error.response.data.detail || 'Houston, tenemos un error de autenticación.';

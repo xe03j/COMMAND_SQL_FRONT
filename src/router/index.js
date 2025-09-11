@@ -29,7 +29,7 @@ const router = createRouter({
             component: () => import('@/views/pages/Login.vue'),
             beforeEnter: (to, from, next) => {
                 if (isAuthenticated()) {
-                    next('/dashboard');
+                    next('/empezar');
                 } else {
                     next();
                 }
