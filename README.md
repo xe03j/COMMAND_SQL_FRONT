@@ -1,20 +1,42 @@
-# Constructora
+# CommandSQL Front
 
-Bienvenido al repositorio del proyecto "Constructora", una solución moderna y eficiente para gestionar proyectos de construcción. Este proyecto está dividido en dos partes principales: una interfaz para clientes y un panel de administración para gestores de la constructora.
+Bienvenido al repositorio del proyecto CommandSQL Front, una aplicación educativa y gamificada para aprender comandos SQL mediante misiones, logros y un sistema de progreso.
+
+Este frontend está desarrollado en Vue.js y se conecta a la API de CommandSQL para gestionar la autenticación, el avance de misiones, los logros obtenidos y más.
+
+## WEB
+
+- Esta web ya tiene una url web alojada en:
+
+```bash
+https://command-sql-front.onrender.com/
+```
 
 ## Estructura del Proyecto
 
-El repositorio contiene dos carpetas principales:
+- El repositorio contiene la interfaz principal del jugador, que incluye:
 
-1. **Cliente**: La interfaz para los clientes, donde pueden agregar su empresa, crear una solicitud de proyecto y revisar los estatus del mismo, a su vez consultar un chat de ayuda
-2. **Administrador**: Un panel de control para los administradores de la constructora, permitiendo la gestión de proyectos y clientes
+- Login y Registro: Autenticación de usuarios con JWT.
+
+- Dashboard: Vista general con acceso a misiones y logros.
+
+- Misiones: Ejercicios prácticos de SQL con pistas y retroalimentación en tiempo real.
+
+- Logros: Sistema de recompensas que motiva el aprendizaje.
+
+- Manual: Guía de comandos y referencias rápidas para el jugador.
 
 ## Tecnologías Utilizadas
 
-- **Vue.js**: Un framework progresivo para construir interfaces de usuario.
-- **Axios**: Una biblioteca cliente HTTP basada en promesas para realizar solicitudes HTTP.
-- **Socket.io-client**: Permite la comunicación en tiempo real entre el cliente y el servidor.
+- Vue.js 3 con Composition API
 
+- Vue Router para el manejo de rutas protegidas
+
+- Axios para la comunicación con la API de CommandSQL
+
+- PrimeVue para componentes de interfaz
+
+- LocalStorage para persistencia de sesión
 ## Instalación
 
 Instrucciones paso a paso para configurar el proyecto en tu entorno local.
@@ -22,13 +44,9 @@ Instrucciones paso a paso para configurar el proyecto en tu entorno local.
 
 ### clona el repositorio
 ```bash
-git clone https://github.com/Eduardo-Orozco-67/ProyectoConstrutora_Fronted_vue.git
+git clone https://github.com/xe03j/COMMAND_SQL_FRONT.git
 ```
 
-### navega a la carpeta del cliente
-```bash
-cd constructora/cliente
-```
 ### instala las dependencias
 ```bash
 npm install
@@ -38,18 +56,20 @@ npm install
 npm run serve
 ```
 
-### repite los pasos para la carpeta del administrador
+### Si quiere usar la version con el api ya en la web usa la version de la rama despliegue
+- Le pedimos que en la version web sea paciente ya que al usar un servicio de host gratuito pueden haber esperas de hasta 1 minuto
+
+### Si quiere usar la version con el api local use la version de la rama master pero ojo aqui debe cambiar la url por 
 ```bash
-cd ../administrador
-npm install
-npm run serve
+http://localhost:8000/(endpoints)
 ```
-### Instalar socket.io-cliente y axios en ambos proyectos
+### si usa master debe de instalar el API REST del repositorio:
 
 ```bash
-npm install axios
-npm install sockect.io-cliente
+https://github.com/xe03j/COMMAND_SQL_BACK
 ```
+### Adicional siga los pasos de configuracion ahi descritos para correr el api FastAPI
+
 ## Browser Support
 
 <img src="https://s3.amazonaws.com/creativetim_bucket/github/browser/chrome.png" width="64" height="64"> <img src="https://s3.amazonaws.com/creativetim_bucket/github/browser/firefox.png" width="64" height="64"> <img src="https://s3.amazonaws.com/creativetim_bucket/github/browser/edge.png" width="64" height="64"> <img src="https://s3.amazonaws.com/creativetim_bucket/github/browser/safari.png" width="64" height="64"> <img src="https://s3.amazonaws.com/creativetim_bucket/github/browser/opera.png" width="64" height="64">

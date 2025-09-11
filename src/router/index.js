@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import AppLayout from '@/layout/AppLayout.vue';
 
 const isAuthenticated = () => {
@@ -28,6 +28,11 @@ const router = createRouter({
             name: 'empezar_view',
             component: () => import('@/views/Empezar.vue'),
             meta: { requiresAuth: true }
+        },
+        {
+            path: '/register',
+            name: 'register_view',
+            component: () => import('@/views/pages/Register.vue')
         },
         {
             path: '/dashboard',

@@ -77,12 +77,17 @@ const handleLogin = async () => {
                 <div class="flex flex-col sm:flex-row gap-4 mt-6">
                     <button
                         @click="handleLogin"
-                        class="flex-1 flex items-center justify-center gap-2 h-14 px-6 bg-green-500 text-black text-lg font-['Press_Start_2P'] rounded-xl shadow-lg shadow-green-400/40 hover:bg-green-600 hover:scale-105 transition-all"
+                        class="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-green-500 text-black text-base font-['Press_Start_2P'] rounded-xl shadow-lg shadow-green-400/40 hover:bg-green-600 hover:scale-105 transition-all"
                     >
                         Iniciar sesión
                     </button>
 
-                    <button class="flex-1 flex items-center justify-center gap-2 h-14 px-6 bg-gray-700 text-white text-lg font-['Press_Start_2P'] rounded-xl shadow-lg hover:bg-gray-600 hover:scale-105 transition-all">Registrarse</button>
+                    <button
+                        @click="() => router.push('/register')"
+                        class="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gray-700 text-white text-base font-['Press_Start_2P'] rounded-xl shadow-lg hover:bg-gray-600 hover:scale-105 transition-all"
+                    >
+                        Registrarse
+                    </button>
                 </div>
 
                 <!-- Error -->
