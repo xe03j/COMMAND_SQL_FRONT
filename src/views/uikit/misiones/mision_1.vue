@@ -42,7 +42,7 @@ const ejecutarComando = async () => {
             const token = localStorage.getItem('access_token');
 
             // 1️⃣ Guardar progreso (suma XP en el backend si es la primera vez)
-            await fetch('http://localhost:8000/progreso/saveprogres', {
+            await fetch('https://command-sql-back.onrender.com/progreso/saveprogres', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ const ejecutarComando = async () => {
             });
 
             // 2️⃣ Asignar logro (ejemplo: logro id=1 para primera misión)
-            await fetch('http://localhost:8000/logros/logrousuario', {
+            await fetch('https://command-sql-back.onrender.com/logros/logrousuario', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -87,7 +87,7 @@ onMounted(async () => {
         const token = localStorage.getItem('access_token');
 
         // 🔑 Obtener usuario
-        const resUser = await fetch('http://localhost:8000/usuarios/me', {
+        const resUser = await fetch('https://command-sql-back.onrender.com/usuarios/me', {
             headers: { Authorization: `Bearer ${token}` }
         });
         if (!resUser.ok) throw new Error('Error al obtener usuario');
@@ -95,7 +95,7 @@ onMounted(async () => {
         usuarioId.value = userData.id_usuario;
 
         // 📘 Obtener misión
-        const resMision = await fetch('http://localhost:8000/misiones/1', {
+        const resMision = await fetch('https://command-sql-back.onrender.com/misiones/1', {
             headers: { Authorization: `Bearer ${token}` }
         });
         if (!resMision.ok) throw new Error('Error al obtener misión');

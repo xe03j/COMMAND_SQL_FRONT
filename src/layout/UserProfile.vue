@@ -10,7 +10,7 @@ const token = localStorage.getItem('access_token');
 // 🔹 Cargar datos del usuario autenticado desde tu API
 onMounted(async () => {
     try {
-        const response = await axios.get('http://127.0.0.1:8000/usuarios/me', {
+        const response = await axios.get('https://command-sql-back.onrender.com/usuarios/me', {
             headers: {
                 Authorization: `Bearer ${token}`
             }

@@ -8,7 +8,7 @@ const token = localStorage.getItem('access_token');
 
 const obtenerTodosLogros = async () => {
     try {
-        const response = await axios.get('http://127.0.0.1:8000/logros/ver', {
+        const response = await axios.get('https://command-sql-back.onrender.com/logros/ver', {
             headers: { Authorization: `Bearer ${token}` }
         });
         logros.value = response.data;
