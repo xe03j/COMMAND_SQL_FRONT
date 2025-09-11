@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router';
+import { createRouter, createWebHashHistory, createWebHistory } from "vue-router";
 import AppLayout from '@/layout/AppLayout.vue';
 
 const isAuthenticated = () => {
@@ -16,7 +16,7 @@ const isAuthenticated = () => {
 };
 
 const router = createRouter({
-    history: createWebHashHistory(),
+    history: createWebHistory(),
     routes: [
         {
             path: '/',
