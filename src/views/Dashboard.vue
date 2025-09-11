@@ -13,7 +13,7 @@ const ordenDificultad = ['Fácil', 'Medio', 'Difícil', 'Experto'];
 
 const obtenerNiveles = async () => {
     try {
-        const response = await axios.get('https://command-sql-back.onrender.com:8000/niveles/ver', {
+        const response = await axios.get('https://command-sql-back.onrender.com/niveles/ver', {
             headers: { Authorization: `Bearer ${token}` }
         });
         niveles.value = response.data.sort((a, b) => {
@@ -26,7 +26,7 @@ const obtenerNiveles = async () => {
 
 const obtenerUsuario = async () => {
     try {
-        const response = await axios.get('https://command-sql-back.onrender.com:8000/usuarios/me', {
+        const response = await axios.get('https://command-sql-back.onrender.com/usuarios/me', {
             headers: { Authorization: `Bearer ${token}` }
         });
         usuario.value = response.data;

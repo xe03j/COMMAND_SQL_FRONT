@@ -3,7 +3,7 @@ import { useAuth } from '@/composables/useAuth';
 import axios from 'axios';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import "@fontsource/press-start-2p"; // Importa toda la fuente
+import '@fontsource/press-start-2p'; // Importa toda la fuente
 
 // Importa imágenes desde assets
 import bg from '@/assets/background.png';
@@ -29,11 +29,17 @@ const handleLogin = async () => {
         formData.append('username', email.value.trim());
         formData.append('password', password.value.trim());
 
-        const loginResponse = await axios.post('https://command-sql-back.onrender.com:8000/auth/login', formData, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } });
+        const loginResponse = await axios.post('https://command-sql-back.onrender.com/auth/login', formData, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } });
 
-        const { access_token } = loginResponse.data;
+        console.log('Respuesta del login en Render:', loginResponse.data);
+
+        const { access_token } = loginResponse.data || {};
+        if (!access_token) {
+            errorMessage.value = 'El servidor no devolvió access_token';
+            return;
+        }
+
         setToken(access_token);
-
         router.push('/empezar');
     } catch (error) {
         if (error.response) {
@@ -72,7 +78,10 @@ const handleLogin = async () => {
 
                 <!-- Botones -->
                 <div class="flex flex-col sm:flex-row gap-4 mt-6">
-                    <button @click="handleLogin" class="flex-1 flex items-center justify-center gap-2 h-14 px-6 bg-green-500 text-black text-lg font-['Press_Start_2P'] rounded-xl shadow-lg shadow-green-400/40 hover:bg-green-600 hover:scale-105 transition-all">
+                    <button
+                        @click="handleLogin"
+                        class="flex-1 flex items-center justify-center gap-2 h-14 px-6 bg-green-500 text-black text-lg font-['Press_Start_2P'] rounded-xl shadow-lg shadow-green-400/40 hover:bg-green-600 hover:scale-105 transition-all"
+                    >
                         Iniciar sesión
                     </button>
 
@@ -80,14 +89,16 @@ const handleLogin = async () => {
                 </div>
 
                 <!-- Error -->
-                <div v-if="errorMessage" class="mt-4 px-4 py-2 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400 text-center">🚨 {{ errorMessage }}</div>
+                <div v-if="errorMessage" class="mt-4 px-4 py-2 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400 text-center">
+                    🚨
+                    {{ errorMessage }}
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <style scoped>
-
 @keyframes typing {
     0% {
         width: 0ch;

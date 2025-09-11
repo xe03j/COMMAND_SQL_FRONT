@@ -11,7 +11,7 @@ const token = localStorage.getItem('access_token');
 
 const obtenerUsuario = async () => {
     try {
-        const response = await axios.get('https://command-sql-back.onrender.com:8000/usuarios/me', {
+        const response = await axios.get('https://command-sql-back.onrender.com/usuarios/me', {
             headers: { Authorization: `Bearer ${token}` }
         });
         usuario.value = response.data;
@@ -26,7 +26,7 @@ const obtenerUsuario = async () => {
 
 const obtenerLogros = async (id_usuario) => {
     try {
-        const response = await axios.get(`https://command-sql-back.onrender.com:8000/logros/usuario/${id_usuario}`, {
+        const response = await axios.get(`https://command-sql-back.onrender.com/logros/usuario/${id_usuario}`, {
             headers: { Authorization: `Bearer ${token}` }
         });
         logros.value = response.data;
@@ -37,7 +37,7 @@ const obtenerLogros = async (id_usuario) => {
 
 const obtenerEstadisticas = async (id_usuario) => {
     try {
-        const response = await axios.get(`https://command-sql-back.onrender.com:8000/progreso/usuario/${id_usuario}`, {
+        const response = await axios.get(`https://command-sql-back.onrender.com/progreso/usuario/${id_usuario}`, {
             headers: { Authorization: `Bearer ${token}` }
         });
         estadisticas.value = response.data;
