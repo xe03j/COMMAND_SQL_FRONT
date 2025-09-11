@@ -38,7 +38,7 @@ const router = createRouter({
         {
             path: '/empezar',
             name: 'empezar_view',
-            component: () => import('@/views/Empezar_view.vue'),
+            component: () => import('@/views/Empezar.vue'),
             meta: { requiresAuth: true }
         },
         {

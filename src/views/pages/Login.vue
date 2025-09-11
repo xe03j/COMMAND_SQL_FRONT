@@ -4,7 +4,6 @@ import axios from 'axios';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import '@fontsource/press-start-2p'; // Importa toda la fuente
-
 // Importa imágenes desde assets
 import bg from '@/assets/background.png';
 import overlay from '@/assets/pngwing2.png';
@@ -29,19 +28,19 @@ const handleLogin = async () => {
         formData.append('username', email.value.trim());
         formData.append('password', password.value.trim());
 
-        const loginResponse = await axios.post('https://command-sql-back.onrender.com/auth/login', formData, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } });
+        const loginResponse = await axios.post('https://command-sql-back.onrender.com/auth/login', formData,
+          { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } });
 
         console.log('Respuesta del login en Render:', loginResponse.data);
 
-        const { access_token } = loginResponse.data || {};
+        const { access_token } = loginResponse.data;
         if (!access_token) {
             errorMessage.value = 'El servidor no devolvió access_token';
             return;
         }
 
         setToken(access_token);
-        router.push({ name: 'empezar_view' });
-
+        router.push('/empezar');
     } catch (error) {
         if (error.response) {
             errorMessage.value = error.response.data.detail || 'Houston, tenemos un error de autenticación.';
