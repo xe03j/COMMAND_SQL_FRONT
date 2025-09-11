@@ -42,7 +42,7 @@ const ejecutarComando = async () => {
             const token = localStorage.getItem('access_token');
 
             // 1️⃣ Guardar progreso (suma XP en el backend si es la primera vez)
-            await fetch('https://command-sql-back.onrender.com/progreso/saveprogres', {
+            await fetch('https://command-sql-back.onrender.com:8000/progreso/saveprogres', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -74,7 +74,7 @@ onMounted(async () => {
         const token = localStorage.getItem('access_token');
 
         // 🔑 Obtener usuario
-        const resUser = await fetch('https://command-sql-back.onrender.com/usuarios/me', {
+        const resUser = await fetch('https://command-sql-back.onrender.com:8000/usuarios/me', {
             headers: { Authorization: `Bearer ${token}` }
         });
         if (!resUser.ok) throw new Error('Error al obtener usuario');
@@ -82,7 +82,7 @@ onMounted(async () => {
         usuarioId.value = userData.id_usuario;
 
         // 📘 Obtener misión
-        const resMision = await fetch('https://command-sql-back.onrender.com/misiones/7', {
+        const resMision = await fetch('https://command-sql-back.onrender.com:8000/misiones/7', {
             headers: { Authorization: `Bearer ${token}` }
         });
         if (!resMision.ok) throw new Error('Error al obtener misión');
