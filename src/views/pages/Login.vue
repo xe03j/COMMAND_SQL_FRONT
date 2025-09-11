@@ -28,18 +28,15 @@ const handleLogin = async () => {
         formData.append('username', email.value.trim());
         formData.append('password', password.value.trim());
 
-        const loginResponse = await axios.post('https://command-sql-back.onrender.com/auth/login', formData,
-          { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } });
+        const loginResponse = await axios.post('https://command-sql-back.onrender.com/auth/login', formData, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } });
 
-        console.log('Respuesta del login en Render:', loginResponse.data);
+        console.log('loginResponse.data:', loginResponse.data);
 
         const { access_token } = loginResponse.data;
-        if (!access_token) {
-            errorMessage.value = 'El servidor no devolvió access_token';
-            return;
-        }
+        console.log('access_token:', access_token);
 
         setToken(access_token);
+
         router.push('/empezar');
     } catch (error) {
         if (error.response) {

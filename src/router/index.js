@@ -3,9 +3,8 @@ import AppLayout from '@/layout/AppLayout.vue';
 
 const isAuthenticated = () => {
     const token = localStorage.getItem('access_token');
-    const role = localStorage.getItem('user_role');
 
-    if (!token || !role) return false;
+    if (!token) return false;
 
     try {
         const { exp } = JSON.parse(atob(token.split('.')[1]));
@@ -16,10 +15,6 @@ const isAuthenticated = () => {
     }
 };
 
-const getUserRole = () => {
-    return localStorage.getItem('user_role') || 'capturista';
-};
-
 const router = createRouter({
     history: createWebHashHistory(),
     routes: [
@@ -27,13 +22,6 @@ const router = createRouter({
             path: '/',
             name: 'login',
             component: () => import('@/views/pages/Login.vue'),
-            beforeEnter: (to, from, next) => {
-                if (isAuthenticated()) {
-                    next('/empezar');
-                } else {
-                    next();
-                }
-            }
         },
         {
             path: '/empezar',
@@ -187,23 +175,14 @@ const router = createRouter({
 // **Protección de rutas con `beforeEach`**
 router.beforeEach(async (to, from, next) => {
     const isAuth = isAuthenticated();
-    const userRole = getUserRole();
 
-    // 🔹 Permitir siempre acceder a login y no redirigir automáticamente
-    if (to.name === 'login') {
-        return next();
-    }
-
-    // 🔹 Si la ruta requiere autenticación y el usuario NO está autenticado
     if (to.meta.requiresAuth && !isAuth) {
-        return next('/');
+        return next('/'); // redirige a login si no autenticado
     }
 
-    // 🔹 Si la ruta requiere ser admin y el usuario no es admin
-    if (to.meta.requiresAdmin && userRole !== 'admin') {
-        return next('/dashboard');
+    if (to.name === 'login' && isAuth) {
+        return next('/empezar'); // ya autenticado, va a empezar
     }
-
     next();
 });
 
