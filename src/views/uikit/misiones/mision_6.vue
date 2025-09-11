@@ -235,34 +235,33 @@ onMounted(async () => {
     z-index: -2;
 }
 
-/* Planeta: lo redimensioné para que no rompa layout visualmente */
+/* Planeta lateral */
 .pngwing2Icon {
     position: fixed;
-    right: -300px; /* meterlo por la derecha fuera del flujo visual */
+    right: -300px;
     top: 50%;
     transform: translateY(-50%);
-    width: 1400px; /* razonable, ya no 10000px */
+    width: 1400px;
     opacity: 0.95;
     z-index: -1;
     pointer-events: none;
 }
 
-/* Grid padre: no forzar altura completa, filas a medida del contenido */
+/* Grid padre responsive */
 .cardParent {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-auto-rows: min-content; /* filas ajustadas al contenido */
-    grid-auto-flow: dense;
+    grid-template-columns: 1fr 1fr; /* por defecto 2 columnas */
+    grid-auto-rows: min-content;
     gap: 20px;
     padding: 24px;
-    align-items: start; /* que los items no se estiren verticalmente */
-    align-content: start; /* evita repartir espacio sobrante entre filas */
-    min-height: calc(100vh - 24px); /* ocupa viewport pero sin forzar estirado */
+    align-items: start;
+    align-content: start;
+    min-height: calc(100vh - 24px);
 }
 
-/* Cabecera (tarjeta "MISION 1") — altura mínima, centrado y flexible */
+/* Cabecera tarjeta "MISION 1" */
 .card {
-    grid-column: 1 / -1; /* ocupa las dos columnas */
+    grid-column: 1 / -1;
     background: rgba(0, 0, 0, 0.4);
     border: 2px solid #15ff73;
     border-radius: 12px;
@@ -271,20 +270,13 @@ onMounted(async () => {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 64px; /* la tarjeta no quedará gigante */
+    min-height: 64px;
     height: auto;
 }
 
-/* Títulos y estilo */
-.heading3 {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 10px;
-}
-
+/* Títulos escalables */
 .commandSql {
-    font-size: 2.2rem; /* reducido un poco para evitar obligar mucha altura */
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
     color: #15ff73;
     text-shadow: 0 0 12px #15ff73, 0 0 24px #15ff73;
     letter-spacing: 4px;
@@ -294,12 +286,12 @@ onMounted(async () => {
 
 .consolaDeComandos {
     font-weight: bold;
-    font-size: 1rem;
+    font-size: clamp(0.8rem, 2vw, 1rem);
     color: white;
     text-shadow: 0 0 6px white;
 }
 
-/* Tarjetas (contenedores) — ahora permiten contenido a demanda */
+/* Tarjetas contenedoras */
 .overlayborder,
 .mainscreenOverlayborder,
 .overlayborder2,
@@ -309,20 +301,19 @@ onMounted(async () => {
     border: 2px solid #15ff73;
     border-radius: 10px;
     padding: 12px;
-    /* IMPORTANT: no overflow:hidden aquí (que cortaba scroll en algunos navegadores) */
     box-shadow: 0 0 15px rgba(21, 255, 115, 0.4);
-    min-height: 80px; /* tamaño base, pero crecerá según el contenido hasta el max-height de sus hijos */
+    min-height: 80px;
 }
 
-/* Scroll interno (Output / Feedback) */
+/* Scroll interno */
 .scrollContainer {
-    max-height: 260px; /* Ajusta según prefieras */
+    max-height: 260px;
     overflow-y: auto;
     word-break: break-word;
     padding-right: 8px;
 }
 
-/* Estilo del scrollbar (neón) */
+/* Scroll estilo neón */
 .scrollContainer::-webkit-scrollbar {
     width: 12px;
 }
@@ -338,7 +329,7 @@ onMounted(async () => {
     border: 2px solid rgba(0, 0, 0, 0.4);
 }
 
-/* Feedback OK */
+/* Feedback */
 .overlayverticalborder {
     border-left: 4px solid #15ff73;
     padding-left: 10px;
@@ -346,7 +337,6 @@ onMounted(async () => {
     color: #15ff73;
 }
 
-/* Feedback WARNING */
 .mainscreenOverlayverticalborder {
     border-left: 4px solid #ffe600;
     padding-left: 10px;
@@ -355,7 +345,6 @@ onMounted(async () => {
     text-shadow: 0 0 6px #ffe600;
 }
 
-/* Feedback ERROR */
 .overlayverticalborder2 {
     border-left: 4px solid #ff3030;
     padding-left: 10px;
@@ -364,26 +353,29 @@ onMounted(async () => {
     text-shadow: 0 0 8px #ff3030;
 }
 
-/* Input */
-.input {
+/* Input + botón responsivos */
+.mainscreenContainer {
     display: flex;
+    gap: 10px;
     align-items: center;
+    flex-wrap: wrap; /* botón baja si no cabe */
+    width: 100%; /* ocupa todo el ancho del contenedor */
+    box-sizing: border-box;
 }
 
 .escribeTuComando {
-    background: black;
-    border: 2px solid white;
-    color: #15ff73;
-    padding: 12px 14px;
-    font-family: 'Press Start 2P', monospace;
-    font-size: 1rem;
-    width: 500px;
-    border-radius: 6px;
-    box-shadow: 0 0 12px rgba(255, 255, 255, 0.12);
-    outline: none;
+    width: 100%; /* ocupa todo el espacio posible */
+    max-width: 500px; /* no crezca demasiado en desktop */
+    min-width: 150px; /* no se achique demasiado en mobile */
+    flex-grow: 1;
+    box-sizing: border-box;
+    border: 2px solid white; /* marco blanco */
+    border-radius: 6px; /* esquinas redondeadas */
+    background: black; /* fondo negro */
+    color: #15ff73; /* texto verde estilo neón */
+    padding: 12px 14px; /* mantiene el padding original */
 }
 
-/* Botón */
 .button {
     background: #444;
     color: white;
@@ -395,6 +387,7 @@ onMounted(async () => {
     transition: 0.25s;
     border: none;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    flex-shrink: 0; /* no se achica, baja a otra línea si no cabe */
 }
 
 .button:hover {
@@ -403,14 +396,16 @@ onMounted(async () => {
     box-shadow: 0 0 18px rgba(21, 255, 115, 0.9);
 }
 
+/* Misiones texto */
 .misinActualNavegacin {
-    font-size: 1.1rem;
+    font-size: clamp(0.9rem, 2vw, 1.1rem); /* tamaño adaptable */
     color: white;
     text-shadow: 0 0 6px white;
+    word-break: break-word; /* evita desbordamiento */
 }
 
 .terminal {
-    font-size: 0.9rem;
+    font-size: clamp(0.7rem, 1.5vw, 0.9rem);
     text-transform: uppercase;
     color: #15ff73;
 }
@@ -430,19 +425,12 @@ onMounted(async () => {
     margin-top: 10px;
 }
 
-.mainscreenContainer {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
 .mainscreenP {
     font-family: monospace;
     font-size: 0.9rem;
     color: #ccc;
 }
 
-/* utilidad: evitar que tarjetas hijas crezcan más de lo que deben en flex/grid */
 .overlayborder,
 .overlayborder2,
 .mainscreenOverlayborder,
@@ -476,7 +464,7 @@ onMounted(async () => {
 }
 
 .popup h2 {
-    font-size: 1.5rem;
+    font-size: clamp(1.2rem, 4vw, 1.5rem);
     margin-bottom: 15px;
 }
 
@@ -507,6 +495,64 @@ onMounted(async () => {
     to {
         transform: scale(1);
         opacity: 1;
+    }
+}
+
+/* --------------------------
+   Media Queries
+   -------------------------- */
+@media (max-width: 768px) {
+    .cardParent {
+        padding: 12px;
+        gap: 12px;
+    }
+
+    .escribeTuComando {
+        max-width: 100%;
+    }
+
+    .mainscreenContainer {
+        gap: 8px;
+    }
+}
+
+@media (max-width: 360px) {
+    .cardParent {
+        grid-template-columns: 1fr;
+        padding: 12px;
+        gap: 12px;
+    }
+
+    .commandSql {
+        font-size: 1.5rem;
+    }
+
+    .misinActualNavegacin {
+        font-size: 0.9rem;
+    }
+
+    .escribeTuComando {
+        max-width: 100%; /* input ocupa todo el ancho disponible */
+    }
+
+    .mainscreenContainer {
+        gap: 8px; /* reduce espacio entre input y botón */
+    }
+
+    .consolaDeComandos {
+        font-size: 0.85rem;
+    }
+
+    .terminal {
+        font-size: 0.75rem;
+    }
+
+    .popup {
+        padding: 20px;
+    }
+
+    .popup h2 {
+        font-size: 1.2rem;
     }
 }
 </style>
