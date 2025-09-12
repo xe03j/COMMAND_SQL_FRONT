@@ -99,17 +99,17 @@ const model = ref([
             {
                 label: 'Manual de Uso',
                 icon: 'pi pi-fw pi-users',
-                items: [{ label: 'Ayuda', icon: 'pi pi-fw pi-search', to: '/manual/ayuda' }]
+                to: '/manual/ayuda'
             },
             {
                 label: 'Logros',
                 icon: 'pi pi-fw pi-users',
-                items: [{ label: 'Ver Logros', icon: 'pi pi-fw pi-search', to: '/logros/todos' }]
+                to: '/logros/todos'
             },
             {
-                label: 'Reportes',
+                label: 'Estadísticas',
                 icon: 'pi pi-fw pi-history',
-                items: [{ label: 'Ver Acciones', icon: 'pi pi-fw pi-eye', to: '/uikit/accionesultima' }]
+                to: '/uikit/accionesultima'
             }
         ]
     }
