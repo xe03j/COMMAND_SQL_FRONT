@@ -2,6 +2,7 @@
 import { ref, onBeforeMount, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useLayout } from '@/layout/composables/layout';
+import desplazarSound from '@/assets/desplazarSound.mp3';
 
 const route = useRoute();
 
@@ -26,6 +27,8 @@ const props = defineProps({
     }
 });
 
+let soundEffect = null;
+
 const isActiveMenu = ref(false);
 const itemKey = ref(null);
 
@@ -35,6 +38,9 @@ onBeforeMount(() => {
     const activeItem = layoutState.activeMenuItem;
 
     isActiveMenu.value = activeItem === itemKey.value || activeItem ? activeItem.startsWith(itemKey.value + '-') : false;
+
+    soundEffect = new Audio(desplazarSound);
+    soundEffect.volume = 0.8;
 });
 
 watch(
@@ -43,7 +49,18 @@ watch(
         isActiveMenu.value = newVal === itemKey.value || newVal.startsWith(itemKey.value + '-');
     }
 );
+
+const playSound = () => {
+    if (soundEffect) {
+        soundEffect.currentTime = 0; // Reinicia desde el inicio
+        soundEffect.play().catch((err) => {
+            console.warn('El navegador bloqueó autoplay:', err);
+        });
+    }
+};
+
 const itemClick = (event, item) => {
+    playSound();
     if (item.disabled) {
         event.preventDefault();
         return;
@@ -140,7 +157,6 @@ li.layout-root-menuitem,
 li.layout-root-menuitem > a,
 li.layout-root-menuitem > router-link,
 li.layout-root-menuitem ul.layout-submenu {
-  background: transparent !important;
+    background: transparent !important;
 }
-
 </style>

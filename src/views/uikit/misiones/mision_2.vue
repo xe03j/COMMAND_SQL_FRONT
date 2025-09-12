@@ -301,7 +301,7 @@ onMounted(async () => {
   font-weight: bold;
   font-size: clamp(0.8rem, 2vw, 1rem);
   color: white;
-  text-shadow: 0 0 6px white;
+
 }
 
 /* Tarjetas contenedoras */
@@ -413,7 +413,7 @@ onMounted(async () => {
 .misinActualNavegacin {
   font-size: clamp(0.9rem, 2vw, 1.1rem); /* tamaño adaptable */
   color: white;
-  text-shadow: 0 0 6px white;
+
   word-break: break-word; /* evita desbordamiento */
 }
 

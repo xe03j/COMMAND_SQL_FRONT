@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import '@fontsource/press-start-2p';
+import soundWin from '@/assets/soundWin.mp3'; // 👈 agrega esta línea
 
 const comando = ref('');
 const output = ref([]);
@@ -37,6 +38,11 @@ const ejecutarComando = async () => {
         feedback.value.push({ tipo: 'success', msg: '🎉 Éxito: Comando ejecutado correctamente 🚀' });
         completada.value = true;
         mostrarPopup.value = true; // activa modal
+
+        if (winSound) {
+            winSound.currentTime = 0;
+            winSound.play().catch((err) => console.warn('Autoplay bloqueado:', err));
+        }
 
         try {
             const token = localStorage.getItem('access_token');
@@ -81,8 +87,12 @@ const ejecutarComando = async () => {
     comando.value = '';
 };
 
+let winSound = null;
+
 // Cargar misión actual y usuario al montar
 onMounted(async () => {
+    winSound = new Audio(soundWin);
+    winSound.volume = 0.7; // volumen moderado
     try {
         const token = localStorage.getItem('access_token');
 
@@ -301,7 +311,6 @@ onMounted(async () => {
     font-weight: bold;
     font-size: clamp(0.8rem, 2vw, 1rem);
     color: white;
-    text-shadow: 0 0 6px white;
 }
 
 /* Tarjetas contenedoras */
@@ -413,7 +422,7 @@ onMounted(async () => {
 .misinActualNavegacin {
     font-size: clamp(0.9rem, 2vw, 1.1rem); /* tamaño adaptable */
     color: white;
-    text-shadow: 0 0 6px white;
+
     word-break: break-word; /* evita desbordamiento */
 }
 
