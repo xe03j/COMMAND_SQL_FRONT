@@ -51,7 +51,8 @@ onBeforeUnmount(() => {
                 <h2 class="card-title">Cláusula WHERE</h2>
                 <p class="card-text">Filtra resultados con <code>WHERE</code>.</p>
                 <div class="code-box">
-                    <pre><code>SELECT energia FROM armas WHERE tipo = 'phaser';</code></pre>
+                    <pre><code>SELECT energia FROM armas
+WHERE tipo = 'phaser';</code></pre>
                 </div>
             </div>
 
@@ -60,7 +61,9 @@ onBeforeUnmount(() => {
                 <h2 class="card-title">Operadores Lógicos</h2>
                 <p class="card-text">Combina condiciones con <code>AND</code>, <code>OR</code> y <code>NOT</code>.</p>
                 <div class="code-box">
-                    <pre><code>SELECT * FROM sensores WHERE tipo='calor' AND activo=TRUE;</code></pre>
+                    <pre><code>SELECT * FROM sensores
+WHERE tipo='calor' A
+AND activo=TRUE;</code></pre>
                 </div>
             </div>
 
@@ -69,7 +72,8 @@ onBeforeUnmount(() => {
                 <h2 class="card-title">Comando DELETE</h2>
                 <p class="card-text">Elimina registros específicos.</p>
                 <div class="code-box">
-                    <pre><code>DELETE FROM objetivos WHERE estado = 'destruido';</code></pre>
+                    <pre><code>DELETE FROM objetivos
+WHERE estado = 'destruido';</code></pre>
                 </div>
             </div>
 
@@ -78,7 +82,9 @@ onBeforeUnmount(() => {
                 <h2 class="card-title">Comando INSERT</h2>
                 <p class="card-text">Agrega nuevos registros a una tabla.</p>
                 <div class="code-box">
-                    <pre><code>INSERT INTO sensores (objeto, distancia) VALUES ('asteroide', 5000);</code></pre>
+                    <pre><code>INSERT INTO sensores
+      (objeto, distancia)
+VALUES ('asteroide', 5000);</code></pre>
                 </div>
             </div>
 
@@ -87,7 +93,84 @@ onBeforeUnmount(() => {
                 <h2 class="card-title">Comando UPDATE</h2>
                 <p class="card-text">Modifica registros existentes.</p>
                 <div class="code-box">
-                    <pre><code>UPDATE armas SET energia = 100 WHERE tipo = 'phaser';</code></pre>
+                    <pre><code>UPDATE armas SET energia = 100
+WHERE tipo = 'phaser';</code></pre>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">Comando CREATE TABLE</h2>
+                <p class="card-text">Se usa para crear nuevas tablas en la base de datos.</p>
+                <div class="code-box">
+                    <pre><code>CREATE TABLE tripulacion (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(50),
+    rango VARCHAR(20)
+);</code></pre>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">Comando ALTER TABLE</h2>
+                <p class="card-text">Permite modificar la estructura de una tabla existente.</p>
+                <div class="code-box">
+                    <pre><code>ALTER TABLE tripulacion
+ADD COLUMN edad INT;</code></pre>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">Comando DROP TABLE</h2>
+                <p class="card-text">Elimina una tabla y todos sus datos.</p>
+                <div class="code-box">
+                    <pre><code>DROP TABLE tripulacion;</code></pre>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">Cláusula ORDER BY</h2>
+                <p class="card-text">Sirve para ordenar los resultados de una consulta.</p>
+                <div class="code-box">
+                    <pre><code>SELECT nombre, rango
+FROM tripulacion
+ORDER BY rango ASC;</code></pre>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">Cláusula GROUP BY</h2>
+                <p class="card-text">Agrupa registros que tienen valores en común.</p>
+                <div class="code-box">
+                    <pre><code>SELECT rango, COUNT(*)
+FROM tripulacion
+GROUP BY rango;</code></pre>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">Cláusula HAVING</h2>
+                <p class="card-text">Filtra resultados después de un <code>GROUP BY</code>.</p>
+                <div class="code-box">
+                    <pre><code>SELECT rango, COUNT(*)
+FROM tripulacion
+GROUP BY rango
+HAVING COUNT(*) &gt; 2;</code></pre>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">Comando CREATE DATABASE</h2>
+                <p class="card-text">Crea una nueva base de datos.</p>
+                <div class="code-box">
+                    <pre><code>CREATE DATABASE tu_base;</code></pre>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">Comando DROP DATABASE</h2>
+                <p class="card-text">Elimina por completo una base de datos.</p>
+                <div class="code-box">
+                    <pre><code>DROP DATABASE tu_base;</code></pre>
                 </div>
             </div>
         </div>

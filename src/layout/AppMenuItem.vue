@@ -175,21 +175,24 @@ li.layout-root-menuitem ul.layout-submenu {
     font-weight: bold;
 }
 
-/* Color para el label "Principal" */
-.layout-menu .principal {
-    color: #15ff73; /* Verde neón */
+/* Encabezados raíz del menú ("Principal", "Apartados") */
+.layout-menuitem-root-text {
+    font-size: 0.75rem;
     font-weight: bold;
-    text-transform: uppercase;
+    letter-spacing: 1px;
     margin: 12px 0 6px 12px;
-    font-size: 14px;
+    text-transform: uppercase;
+    color: #ffffff !important; /* Fuerza blanco si algo los apaga */
 }
 
-/* Color para el label "Apartados" */
-.layout-menu .apartados {
-    color: #ffb347; /* Naranja */
-    font-weight: bold;
-    text-transform: uppercase;
-    margin: 12px 0 6px 12px;
-    font-size: 14px;
+/* Diferencia por nombre */
+.layout-menuitem-root-text:has-text('Principal') {
+    color: #15ff73 !important; /* Verde neón */
+    text-shadow: 0 0 6px #15ff73;
+}
+
+.layout-menuitem-root-text:has-text('Apartados') {
+    color: #ffb347 !important; /* Naranja */
+    text-shadow: 0 0 6px #ffb347;
 }
 </style>
