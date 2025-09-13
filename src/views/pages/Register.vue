@@ -3,8 +3,8 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 import '@fontsource/press-start-2p';
-import bg from '@/assets/background.png';
-import overlay from '@/assets/pngwing2.png';
+import bg from '@/assets/login.png';
+
 
 const email = ref('');
 const password = ref('');
@@ -77,7 +77,6 @@ const handleRegister = async () => {
     <div class="relative w-full min-h-screen bg-black font-press flex items-center justify-center overflow-hidden">
         <!-- Fondo -->
         <img :src="bg" alt="background" class="absolute inset-0 w-full h-full object-cover" />
-        <img :src="overlay" alt="overlay" class="absolute inset-0 w-full h-full object-contain opacity-80" />
 
         <div class="relative z-10 flex flex-col items-center w-full max-w-3xl px-6">
             <div class="mb-10 text-center">
