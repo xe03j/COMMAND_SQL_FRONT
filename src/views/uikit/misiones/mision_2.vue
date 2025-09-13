@@ -1,6 +1,9 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 import '@fontsource/press-start-2p';
+import soundWin from '@/assets/soundWin.mp3';
+import router from '@/router';
+import bS from '@/assets/soundm1.mp3'; // audio
 
 const comando = ref('');
 const output = ref([]);
@@ -37,6 +40,17 @@ const ejecutarComando = async () => {
         feedback.value.push({ tipo: 'success', msg: '🎉 Éxito: Comando ejecutado correctamente 🚀' });
         completada.value = true;
         mostrarPopup.value = true; // activa modal
+
+        if (winSound) {
+            winSound.currentTime = 0;
+            winSound.play().catch((err) => console.warn('Autoplay bloqueado:', err));
+        }
+        setTimeout(() => {
+            mostrarPopup.value = false;
+            router.push({ path: `/mision/3` }).then(() => {
+                router.go(0); // recarga la página
+            });
+        }, 2500);
 
         try {
             const token = localStorage.getItem('access_token');
@@ -81,8 +95,20 @@ const ejecutarComando = async () => {
     comando.value = '';
 };
 
+let winSound = null;
+let audio = null;
+
 // Cargar misión actual y usuario al montar
 onMounted(async () => {
+    audio = new Audio(bS);
+    audio.loop = true;
+    audio.volume = 0.4; //
+    audio.play().catch((err) => {
+        console.warn('El navegador bloqueó autoplay, se necesita interacción:', err);
+    });
+
+    winSound = new Audio(soundWin);
+    winSound.volume = 0.7; // volumen moderado
     try {
         const token = localStorage.getItem('access_token');
 
@@ -108,18 +134,22 @@ onMounted(async () => {
         feedback.value.push({ tipo: 'error', msg: '❌ No se pudo cargar misión o usuario.' });
     }
 });
+
+onBeforeUnmount(() => {
+    if (audio) {
+        audio.pause();
+        audio = null;
+    }
+});
 </script>
 
 <template>
     <div :class="$style.mainscreen">
         <!-- Fondo -->
         <div :class="$style.background">
-            <img src="@/assets/image6.png" alt="Fondo" />
+            <img src="@/assets/16.png" alt="Fondo" class="absolute inset-0 w-full h-full object-cover" />
             <div :class="$style.overlay"></div>
         </div>
-
-        <!-- Planeta lateral -->
-        <img :class="$style.pngwing2Icon" alt="Planeta" src="@/assets/pngwing2.png" />
 
         <!-- Contenedor principal -->
         <div :class="$style.cardParent">
@@ -221,87 +251,86 @@ onMounted(async () => {
    Layout general / fix grid
    -------------------------- */
 .mainscreen {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  font-family: 'Press Start 2P', cursive;
-  color: #15ff73;
-  overflow: hidden;
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    font-family: 'Press Start 2P', cursive;
+    color: #15ff73;
+    overflow: hidden;
 }
 
 .background {
-  position: fixed;
-  inset: 0;
-  z-index: -3;
+    position: fixed;
+    inset: 0;
+    z-index: -3;
 }
 
 .background img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.65);
-  z-index: -2;
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: -2;
 }
 
 /* Planeta lateral */
 .pngwing2Icon {
-  position: fixed;
-  right: -300px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 1400px;
-  opacity: 0.95;
-  z-index: -1;
-  pointer-events: none;
+    position: fixed;
+    right: -300px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1400px;
+    opacity: 0.95;
+    z-index: -1;
+    pointer-events: none;
 }
 
 /* Grid padre responsive */
 .cardParent {
-  display: grid;
-  grid-template-columns: 1fr 1fr; /* por defecto 2 columnas */
-  grid-auto-rows: min-content;
-  gap: 20px;
-  padding: 24px;
-  align-items: start;
-  align-content: start;
-  min-height: calc(100vh - 24px);
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* por defecto 2 columnas */
+    grid-auto-rows: min-content;
+    gap: 20px;
+    padding: 24px;
+    align-items: start;
+    align-content: start;
+    min-height: calc(100vh - 24px);
 }
 
 /* Cabecera tarjeta "MISION 1" */
 .card {
-  grid-column: 1 / -1;
-  background: rgba(0, 0, 0, 0.4);
-  border: 2px solid #15ff73;
-  border-radius: 12px;
-  padding: 8px 12px;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 64px;
-  height: auto;
+    grid-column: 1 / -1;
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px solid #15ff73;
+    border-radius: 12px;
+    padding: 8px 12px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 64px;
+    height: auto;
 }
 
 /* Títulos escalables */
 .commandSql {
-  font-size: clamp(1.5rem, 4vw, 2.2rem);
-  color: #15ff73;
-  text-shadow: 0 0 12px #15ff73, 0 0 24px #15ff73;
-  letter-spacing: 4px;
-  text-align: center;
-  margin: 0;
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    color: #15ff73;
+    text-shadow: 0 0 12px #15ff73, 0 0 24px #15ff73;
+    letter-spacing: 4px;
+    text-align: center;
+    margin: 0;
 }
 
 .consolaDeComandos {
-  font-weight: bold;
-  font-size: clamp(0.8rem, 2vw, 1rem);
-  color: white;
-
+    font-weight: bold;
+    font-size: clamp(0.8rem, 2vw, 1rem);
+    color: white;
 }
 
 /* Tarjetas contenedoras */
@@ -310,138 +339,138 @@ onMounted(async () => {
 .overlayborder2,
 .overlayborder3,
 .overlayborder4 {
-  background: rgba(0, 0, 0, 0.7);
-  border: 2px solid #15ff73;
-  border-radius: 10px;
-  padding: 12px;
-  box-shadow: 0 0 15px rgba(21, 255, 115, 0.4);
-  min-height: 80px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid #15ff73;
+    border-radius: 10px;
+    padding: 12px;
+    box-shadow: 0 0 15px rgba(21, 255, 115, 0.4);
+    min-height: 80px;
 }
 
 /* Scroll interno */
 .scrollContainer {
-  max-height: 260px;
-  overflow-y: auto;
-  word-break: break-word;
-  padding-right: 8px;
+    max-height: 260px;
+    overflow-y: auto;
+    word-break: break-word;
+    padding-right: 8px;
 }
 
 /* Scroll estilo neón */
 .scrollContainer::-webkit-scrollbar {
-  width: 12px;
+    width: 12px;
 }
 
 .scrollContainer::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.25);
-  border-radius: 8px;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
 }
 
 .scrollContainer::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, rgba(21, 255, 115, 0.9), rgba(21, 255, 115, 0.6));
-  border-radius: 8px;
-  border: 2px solid rgba(0, 0, 0, 0.4);
+    background: linear-gradient(180deg, rgba(21, 255, 115, 0.9), rgba(21, 255, 115, 0.6));
+    border-radius: 8px;
+    border: 2px solid rgba(0, 0, 0, 0.4);
 }
 
 /* Feedback */
 .overlayverticalborder {
-  border-left: 4px solid #15ff73;
-  padding-left: 10px;
-  margin: 6px 0;
-  color: #15ff73;
+    border-left: 4px solid #15ff73;
+    padding-left: 10px;
+    margin: 6px 0;
+    color: #15ff73;
 }
 
 .mainscreenOverlayverticalborder {
-  border-left: 4px solid #ffe600;
-  padding-left: 10px;
-  margin: 6px 0;
-  color: #ffe600;
-  text-shadow: 0 0 6px #ffe600;
+    border-left: 4px solid #ffe600;
+    padding-left: 10px;
+    margin: 6px 0;
+    color: #ffe600;
+    text-shadow: 0 0 6px #ffe600;
 }
 
 .overlayverticalborder2 {
-  border-left: 4px solid #ff3030;
-  padding-left: 10px;
-  margin: 6px 0;
-  color: #ff3030;
-  text-shadow: 0 0 8px #ff3030;
+    border-left: 4px solid #ff3030;
+    padding-left: 10px;
+    margin: 6px 0;
+    color: #ff3030;
+    text-shadow: 0 0 8px #ff3030;
 }
 
 /* Input + botón responsivos */
 .mainscreenContainer {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  flex-wrap: wrap; /* botón baja si no cabe */
-  width: 100%; /* ocupa todo el ancho del contenedor */
-  box-sizing: border-box;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap; /* botón baja si no cabe */
+    width: 100%; /* ocupa todo el ancho del contenedor */
+    box-sizing: border-box;
 }
 
 .escribeTuComando {
-  width: 100%; /* ocupa todo el espacio posible */
-  max-width: 500px; /* no crezca demasiado en desktop */
-  min-width: 150px; /* no se achique demasiado en mobile */
-  flex-grow: 1;
-  box-sizing: border-box;
-  border: 2px solid white; /* marco blanco */
-  border-radius: 6px; /* esquinas redondeadas */
-  background: black; /* fondo negro */
-  color: #15ff73; /* texto verde estilo neón */
-  padding: 12px 14px; /* mantiene el padding original */
+    width: 100%; /* ocupa todo el espacio posible */
+    max-width: 500px; /* no crezca demasiado en desktop */
+    min-width: 150px; /* no se achique demasiado en mobile */
+    flex-grow: 1;
+    box-sizing: border-box;
+    border: 2px solid white; /* marco blanco */
+    border-radius: 6px; /* esquinas redondeadas */
+    background: black; /* fondo negro */
+    color: #15ff73; /* texto verde estilo neón */
+    padding: 12px 14px; /* mantiene el padding original */
 }
 
 .button {
-  background: #444;
-  color: white;
-  padding: 10px 18px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 0.9rem;
-  transition: 0.25s;
-  border: none;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-  flex-shrink: 0; /* no se achica, baja a otra línea si no cabe */
+    background: #444;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: 0.25s;
+    border: none;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    flex-shrink: 0; /* no se achica, baja a otra línea si no cabe */
 }
 
 .button:hover {
-  background: #15ff73;
-  color: black;
-  box-shadow: 0 0 18px rgba(21, 255, 115, 0.9);
+    background: #15ff73;
+    color: black;
+    box-shadow: 0 0 18px rgba(21, 255, 115, 0.9);
 }
 
 /* Misiones texto */
 .misinActualNavegacin {
-  font-size: clamp(0.9rem, 2vw, 1.1rem); /* tamaño adaptable */
-  color: white;
+    font-size: clamp(0.9rem, 2vw, 1.1rem); /* tamaño adaptable */
+    color: white;
 
-  word-break: break-word; /* evita desbordamiento */
+    word-break: break-word; /* evita desbordamiento */
 }
 
 .terminal {
-  font-size: clamp(0.7rem, 1.5vw, 0.9rem);
-  text-transform: uppercase;
-  color: #15ff73;
+    font-size: clamp(0.7rem, 1.5vw, 0.9rem);
+    text-transform: uppercase;
+    color: #15ff73;
 }
 
 .container {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
 .selectFrom {
-  font-family: monospace;
-  font-size: 0.95rem;
+    font-family: monospace;
+    font-size: 0.95rem;
 }
 
 .mainscreenMargin {
-  margin-top: 10px;
+    margin-top: 10px;
 }
 
 .mainscreenP {
-  font-family: monospace;
-  font-size: 0.9rem;
-  color: #ccc;
+    font-family: monospace;
+    font-size: 0.9rem;
+    color: #ccc;
 }
 
 .overlayborder,
@@ -449,124 +478,123 @@ onMounted(async () => {
 .mainscreenOverlayborder,
 .overlayborder3,
 .overlayborder4 {
-  min-width: 0;
-  min-height: 0;
+    min-width: 0;
+    min-height: 0;
 }
 
 /* Popup felicitación */
 .popupOverlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
 }
 
 .popup {
-  background: black;
-  border: 3px solid #15ff73;
-  border-radius: 12px;
-  padding: 30px;
-  text-align: center;
-  color: #15ff73;
-  text-shadow: 0 0 10px #15ff73;
-  box-shadow: 0 0 20px rgba(21, 255, 115, 0.7);
-  animation: popupIn 0.5s ease-out;
+    background: black;
+    border: 3px solid #15ff73;
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    color: #15ff73;
+    text-shadow: 0 0 10px #15ff73;
+    box-shadow: 0 0 20px rgba(21, 255, 115, 0.7);
+    animation: popupIn 0.5s ease-out;
 }
 
 .popup h2 {
-  font-size: clamp(1.2rem, 4vw, 1.5rem);
-  margin-bottom: 15px;
+    font-size: clamp(1.2rem, 4vw, 1.5rem);
+    margin-bottom: 15px;
 }
 
 .closeButton {
-  margin-top: 20px;
-  background: #15ff73;
-  border: none;
-  padding: 10px 20px;
-  font-family: 'Press Start 2P';
-  font-size: 0.9rem;
-  border-radius: 6px;
-  cursor: pointer;
-  color: black;
-  box-shadow: 0 0 10px #15ff73;
+    margin-top: 20px;
+    background: #15ff73;
+    border: none;
+    padding: 10px 20px;
+    font-family: 'Press Start 2P';
+    font-size: 0.9rem;
+    border-radius: 6px;
+    cursor: pointer;
+    color: black;
+    box-shadow: 0 0 10px #15ff73;
 }
 
 .closeButton:hover {
-  background: white;
-  color: black;
-  box-shadow: 0 0 15px white;
+    background: white;
+    color: black;
+    box-shadow: 0 0 15px white;
 }
 
 @keyframes popupIn {
-  from {
-    transform: scale(0.6);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
+    from {
+        transform: scale(0.6);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 /* --------------------------
    Media Queries
    -------------------------- */
 @media (max-width: 768px) {
-  .cardParent {
-    padding: 12px;
-    gap: 12px;
-  }
+    .cardParent {
+        padding: 12px;
+        gap: 12px;
+    }
 
-  .escribeTuComando {
-    max-width: 100%;
-  }
+    .escribeTuComando {
+        max-width: 100%;
+    }
 
-  .mainscreenContainer {
-    gap: 8px;
-  }
+    .mainscreenContainer {
+        gap: 8px;
+    }
 }
 
 @media (max-width: 360px) {
-  .cardParent {
-    grid-template-columns: 1fr;
-    padding: 12px;
-    gap: 12px;
-  }
+    .cardParent {
+        grid-template-columns: 1fr;
+        padding: 12px;
+        gap: 12px;
+    }
 
-  .commandSql {
-    font-size: 1.5rem;
-  }
+    .commandSql {
+        font-size: 1.5rem;
+    }
 
-  .misinActualNavegacin {
-    font-size: 0.9rem;
-  }
+    .misinActualNavegacin {
+        font-size: 0.9rem;
+    }
 
-  .escribeTuComando {
-    max-width: 100%; /* input ocupa todo el ancho disponible */
-  }
+    .escribeTuComando {
+        max-width: 100%; /* input ocupa todo el ancho disponible */
+    }
 
-  .mainscreenContainer {
-    gap: 8px; /* reduce espacio entre input y botón */
-  }
+    .mainscreenContainer {
+        gap: 8px; /* reduce espacio entre input y botón */
+    }
 
-  .consolaDeComandos {
-    font-size: 0.85rem;
-  }
+    .consolaDeComandos {
+        font-size: 0.85rem;
+    }
 
-  .terminal {
-    font-size: 0.75rem;
-  }
+    .terminal {
+        font-size: 0.75rem;
+    }
 
-  .popup {
-    padding: 20px;
-  }
+    .popup {
+        padding: 20px;
+    }
 
-  .popup h2 {
-    font-size: 1.2rem;
-  }
+    .popup h2 {
+        font-size: 1.2rem;
+    }
 }
 </style>
-

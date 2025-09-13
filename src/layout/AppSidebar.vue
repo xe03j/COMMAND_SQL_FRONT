@@ -11,7 +11,7 @@ import AppMenu from './AppMenu.vue';
 <style lang="scss" scoped>
 /* Fondo del sidebar completo */
 .layout-sidebar {
-    background: black !important; /* o rgba(0,0,0,0) para transparencia total */
+    background: transparent !important; /* o rgba(0,0,0,0) para transparencia total */
 }
 
 /* Por si hay scroll o padding que muestre blanco */
@@ -25,7 +25,7 @@ import AppMenu from './AppMenu.vue';
 }
 
 .layout-sidebar::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05); /* fondo del track */
+    background: rgba(0, 0, 0, 0.05); /* fondo del track */
     border-radius: 4px;
 }
 

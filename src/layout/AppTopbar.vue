@@ -4,7 +4,7 @@ import { useLayout } from '@/layout/composables/layout';
 import { useRouter } from 'vue-router';
 import logoImage from '@/assets/logo22.png';
 import UserProfile from '@/layout/UserProfile.vue';
-import desplazarSound from '@/assets/desplazarSound.mp3'; // 👈 importa tu sonido
+import desplazarSound from '@/assets/desplazarSound.mp3'; // importa sonido
 
 const { layoutConfig, onMenuToggle } = useLayout();
 const outsideClickListener = ref(null);
@@ -110,7 +110,7 @@ const isOutsideClicked = (event) => {
 
 <style lang="scss" scoped>
 .layout-topbar {
-    background-color: #000000; /* Azul UNACH */
+    background-color: transparent;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -138,27 +138,12 @@ const isOutsideClicked = (event) => {
     position: absolute;
     top: 100%;
     right: 0;
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    background: #0a0a0a !important;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
     padding: 1rem;
     z-index: 100;
-}
-
-.logout-button {
-    width: 100%;
-    padding: 0.5rem;
-    background-color: #c9a227; /* Dorado UNACH */
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    text-align: center;
-    margin-top: 1rem;
-}
-
-.logout-button:hover {
-    background-color: #b8961e; /* Dorado más oscuro */
+    min-width: 220px;
+    border: 1px solid #1a1a1a;
 }
 </style>

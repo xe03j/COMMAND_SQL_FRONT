@@ -1,7 +1,9 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 import '@fontsource/press-start-2p';
-import soundWin from '@/assets/soundWin.mp3'; // 👈 agrega esta línea
+import soundWin from '@/assets/soundWin.mp3';
+import router from '@/router'; // 👈 agrega esta línea
+import bS from '@/assets/soundm1.mp3'; // audio
 
 const comando = ref('');
 const output = ref([]);
@@ -43,6 +45,12 @@ const ejecutarComando = async () => {
             winSound.currentTime = 0;
             winSound.play().catch((err) => console.warn('Autoplay bloqueado:', err));
         }
+        setTimeout(() => {
+            mostrarPopup.value = false;
+            router.push({ path: `/mision/2` }).then(() => {
+                router.go(0); // recarga la página
+            });
+        }, 2500);
 
         try {
             const token = localStorage.getItem('access_token');
@@ -88,9 +96,17 @@ const ejecutarComando = async () => {
 };
 
 let winSound = null;
+let audio = null;
 
 // Cargar misión actual y usuario al montar
 onMounted(async () => {
+    audio = new Audio(bS);
+    audio.loop = true;
+    audio.volume = 0.4; //
+    audio.play().catch((err) => {
+        console.warn('El navegador bloqueó autoplay, se necesita interacción:', err);
+    });
+
     winSound = new Audio(soundWin);
     winSound.volume = 0.7; // volumen moderado
     try {
@@ -118,18 +134,22 @@ onMounted(async () => {
         feedback.value.push({ tipo: 'error', msg: '❌ No se pudo cargar misión o usuario.' });
     }
 });
+
+onBeforeUnmount(() => {
+    if (audio) {
+        audio.pause();
+        audio = null;
+    }
+});
 </script>
 
 <template>
     <div :class="$style.mainscreen">
         <!-- Fondo -->
         <div :class="$style.background">
-            <img src="@/assets/image6.png" alt="Fondo" />
+            <img src="@/assets/11.png" alt="Fondo" />
             <div :class="$style.overlay"></div>
         </div>
-
-        <!-- Planeta lateral -->
-        <img :class="$style.pngwing2Icon" alt="Planeta" src="@/assets/pngwing2.png" />
 
         <!-- Contenedor principal -->
         <div :class="$style.cardParent">
@@ -463,55 +483,71 @@ onMounted(async () => {
 }
 
 /* Popup felicitación */
+/* Popup felicitación - versión más sobria */
 .popupOverlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.85);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 999;
+    backdrop-filter: blur(4px);
 }
 
 .popup {
-    background: black;
-    border: 3px solid #15ff73;
-    border-radius: 12px;
-    padding: 30px;
+    background: linear-gradient(145deg, #121212 0%, #1a1a1a 100%);
+    border: 2px solid #4caf50;
+    border-radius: 15px;
+    padding: 40px 30px;
     text-align: center;
-    color: #15ff73;
-    text-shadow: 0 0 10px #15ff73;
-    box-shadow: 0 0 20px rgba(21, 255, 115, 0.7);
-    animation: popupIn 0.5s ease-out;
+    color: #c8f5d4;
+    text-shadow: 0 0 5px #4caf50;
+    box-shadow: 0 0 20px rgba(76, 175, 80, 0.5), inset 0 0 10px rgba(76, 175, 80, 0.2);
+    animation: popupIn 0.4s ease-out;
+    max-width: 600px;
+    width: 85%;
 }
 
 .popup h2 {
-    font-size: clamp(1.2rem, 4vw, 1.5rem);
+    font-size: clamp(1.6rem, 4.5vw, 2rem);
+    margin-bottom: 20px;
+    letter-spacing: 1.5px;
+    color: #a8f0b1;
+    text-shadow: 0 0 4px #4caf50;
+}
+
+.popup p {
+    font-size: clamp(0.95rem, 2.5vw, 1.2rem);
     margin-bottom: 15px;
+    color: #c8f5d4;
+    text-shadow: 0 0 3px #4caf50;
 }
 
 .closeButton {
     margin-top: 20px;
-    background: #15ff73;
+    background: #4caf50;
     border: none;
-    padding: 10px 20px;
+    padding: 12px 25px;
     font-family: 'Press Start 2P';
     font-size: 0.9rem;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
-    color: black;
-    box-shadow: 0 0 10px #15ff73;
+    color: #121212;
+    box-shadow: 0 0 10px #4caf50 inset;
+    transition: all 0.2s ease-in-out;
 }
 
 .closeButton:hover {
-    background: white;
-    color: black;
-    box-shadow: 0 0 15px white;
+    background: #67d473;
+    color: #121212;
+    box-shadow: 0 0 15px #67d473 inset;
+    transform: scale(1.03);
 }
 
 @keyframes popupIn {
     from {
-        transform: scale(0.6);
+        transform: scale(0.7);
         opacity: 0;
     }
     to {

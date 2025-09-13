@@ -7,7 +7,6 @@ const user = ref(null);
 const router = useRouter();
 const token = localStorage.getItem('access_token');
 
-// 🔹 Cargar datos del usuario autenticado desde tu API
 onMounted(async () => {
     try {
         const response = await axios.get('https://command-sql-back.onrender.com/usuarios/me', {
@@ -16,7 +15,6 @@ onMounted(async () => {
             }
         });
 
-        // Ajusta según lo que devuelve tu endpoint
         const { email, nombre, apellido_paterno, apellido_materno, rol } = response.data;
         user.value = { email, nombre, apellido_paterno, apellido_materno, rol };
     } catch (error) {
@@ -24,7 +22,6 @@ onMounted(async () => {
     }
 });
 
-// 🔹 Función para cerrar sesión
 const logout = () => {
     localStorage.removeItem('access_token');
     router.push('/');
@@ -54,39 +51,39 @@ const logout = () => {
 <style scoped>
 .user-card {
     width: 320px;
-    background: #000; /* 🔹 Fondo negro */
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0, 255, 0, 0.2); /* Verde sutil */
+    background: #0a0a0a; /* 🔹 Fondo negro mate */
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 255, 0, 0.1); /* 🔹 Verde muy sutil */
     overflow: hidden;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Press Start 2P', monospace; /* estilo retro */
     text-align: center;
     margin: 20px auto;
-    transition: transform 0.3s ease-in-out;
-    border: 1px solid #0f0; /* 🔹 Borde verde */
+    transition: transform 0.2s ease-in-out;
+    border: 1px solid #1a1a1a; /* 🔹 Borde gris oscuro, NO blanco */
 }
 
 .user-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-3px);
 }
 
-/* Encabezado con degradado negro-verde */
+/* 🔹 Encabezado sin degradado */
 .card-header {
-    background: linear-gradient(135deg, #000, #004400);
+    background: #0a0a0a;
     padding: 20px 0;
 }
 
 .profile-icon {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background-color: black;
-    color: #0f0; /* Verde */
-    font-size: 4rem;
-    border: 4px solid #0f0;
+    background-color: #111;
+    color: #0f0; /* Verde discreto */
+    font-size: 2.5rem;
+    border: 2px solid #0f0;
 }
 
 .card-body {
@@ -95,45 +92,42 @@ const logout = () => {
 
 .card-body h2 {
     margin: 10px 0;
-    font-size: 1.5em;
+    font-size: 1em;
     font-weight: bold;
-    color: white; /* 🔹 Nombre en blanco */
+    color: #e0e0e0; /* Blanco suave */
 }
 
 .card-body .info {
     margin: 5px 0;
-    font-size: 1em;
-    color: #bbb; /* Gris claro */
+    font-size: 0.9em;
+    color: #aaa; /* Gris claro */
 }
 
 .card-body strong {
-    color: #0f0; /* Verde para etiquetas */
+    color: #0f0; /* Verde retro */
 }
 
-/* Botón en verde */
 .logout-btn {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 10px 20px;
-    background-color: #0f0;
-    color: black;
-    font-size: 1em;
-    font-weight: bold;
-    border: none;
-    border-radius: 8px;
+    padding: 8px 16px;
+    background-color: #111;
+    color: #0f0;
+    font-size: 0.8em;
+    border: 1px solid #0f0;
+    border-radius: 6px;
     cursor: pointer;
-    margin-top: 15px;
-    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+    margin-top: 12px;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 
 .logout-btn i {
-    font-size: 1.2em;
+    font-size: 1em;
 }
 
-/* Hover más brillante */
 .logout-btn:hover {
-    background-color: #00ff66;
-    color: black;
+    background-color: #0f0;
+    color: #111;
 }
 </style>

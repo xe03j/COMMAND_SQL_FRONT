@@ -5,10 +5,12 @@ import AppMenuItem from './AppMenuItem.vue';
 const model = ref([
     {
         label: 'Principal',
+        class: 'principal',
         items: [{ label: 'Inicio', icon: 'pi pi-fw pi-home', to: '/dashboard' }]
     },
     {
         label: 'Apartados',
+        class: 'apartados',
         items: [
             {
                 label: 'Misiones',
@@ -143,4 +145,5 @@ ul.layout-menu {
     background: transparent !important;
     border: none;
 }
+
 </style>

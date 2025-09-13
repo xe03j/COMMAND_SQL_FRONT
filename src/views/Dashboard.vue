@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import axios from 'axios';
-import image6 from '@/assets/image6.png';
+import image6 from '@/assets/dashbg.png';
 import bS from '@/assets/bS.mp3'; // audio
 
 const niveles = ref([]);
@@ -80,15 +80,14 @@ onBeforeUnmount(() => {
                 <div class="progress-fill" :style="{ width: progreso + '%' }"></div>
             </div>
         </div>
-
         <div class="grid">
-            <div v-for="nivel in niveles" :key="nivel.id_nivel" class="card">
+            <div v-for="nivel in niveles" :key="nivel.id_nivel" class="card" :class="nivel.dificultad.toLowerCase()">
                 <h2 class="nivel-titulo">{{ nivel.titulo }}</h2>
                 <p class="nivel-descripcion">{{ nivel.descripcion }}</p>
 
                 <div class="info">
                     <span class="tag">🎯 {{ nivel.tema_sql }}</span>
-                    <span class="dificultad">⚡ {{ nivel.dificultad }}</span>
+                    <span class="dificultad" :class="nivel.dificultad.toLowerCase()">⚡ {{ nivel.dificultad }}</span>
                 </div>
             </div>
         </div>
@@ -176,6 +175,7 @@ onBeforeUnmount(() => {
     gap: 2rem;
 }
 
+/* Base */
 .card {
     background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(10px);
@@ -183,12 +183,31 @@ onBeforeUnmount(() => {
     padding: 1.5rem;
     text-align: left;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 0 20px rgba(21, 255, 115, 0.2);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
 }
 
 .card:hover {
     transform: translateY(-5px) scale(1.03);
-    box-shadow: 0 0 25px rgba(21, 255, 115, 0.5);
+}
+
+.card.fácil {
+    border: 2px solid #22c55e; /* verde */
+    box-shadow: 0 0 15px rgba(34, 197, 94, 0.5);
+}
+
+.card.medio {
+    border: 2px solid #3b82f6; /* azul */
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+}
+
+.card.difícil {
+    border: 2px solid #f97316; /* naranja */
+    box-shadow: 0 0 15px rgba(249, 115, 22, 0.5);
+}
+
+.card.experto {
+    border: 2px solid #ef4444; /* rojo */
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.6);
 }
 
 .nivel-titulo {
@@ -218,5 +237,28 @@ onBeforeUnmount(() => {
 
 .dificultad {
     color: #facc15;
+}
+
+/* Base texto */
+.dificultad {
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Colores para texto de dificultad */
+.dificultad.fácil {
+    color: #22c55e; /* verde */
+}
+
+.dificultad.medio {
+    color: #3b82f6; /* azul */
+}
+
+.dificultad.difícil {
+    color: #f97316; /* naranja */
+}
+
+.dificultad.experto {
+    color: #ef4444; /* rojo */
 }
 </style>

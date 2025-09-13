@@ -4,19 +4,18 @@ import axios from 'axios';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import '@fontsource/press-start-2p';
-import bg from '@/assets/background.png';
-import overlay from '@/assets/pngwing2.png';
+import bg from '@/assets/login.png';
 
 const { setToken } = useAuth();
 const email = ref('');
 const password = ref('');
 const errorMessage = ref('');
-const loading = ref(false); // 👈 nuevo
+const loading = ref(false); // nuevo
 const router = useRouter();
 
 const handleLogin = async () => {
     errorMessage.value = '';
-    loading.value = true; // 👈 activa el spinner
+    loading.value = true; // activa el spinner
 
     if (!email.value.trim() || !password.value.trim()) {
         errorMessage.value = 'Cadete, completa todos los campos.';
@@ -41,7 +40,7 @@ const handleLogin = async () => {
             errorMessage.value = 'Ups, Houston hubo error en la conexión. Intenta más tarde.';
         }
     } finally {
-        loading.value = false; // 👈 desactiva el spinner
+        loading.value = false; // desactiva el spinner
     }
 };
 </script>
@@ -50,7 +49,7 @@ const handleLogin = async () => {
     <div class="relative w-full min-h-screen bg-black font-press flex items-center justify-center overflow-hidden">
         <!-- Fondo -->
         <img :src="bg" alt="background" class="absolute inset-0 w-full h-full object-cover" />
-        <img :src="overlay" alt="overlay" class="absolute inset-0 w-full h-full object-contain opacity-80" />
+
 
         <!-- Contenedor principal -->
         <div class="relative z-10 flex flex-col items-center w-full max-w-3xl px-6">

@@ -1,7 +1,6 @@
 <script setup>
 import { useRouter } from 'vue-router';
-import image6 from '@/assets/image6.png';
-import pngwing3 from '@/assets/pngwing3.png';
+import image6 from '@/assets/empbg.png';
 import startSound from '@/assets/iniciarSound.mp3';
 import '@fontsource/press-start-2p';
 
@@ -21,8 +20,7 @@ const playSoundAndGo = () => {
 <template>
     <div class="relative w-full min-h-screen bg-black text-white font-['Press_Start_2P',monospace] overflow-hidden flex flex-col items-center justify-center">
         <!-- Fondo -->
-        <img :src="image6" alt="Fondo" class="absolute inset-0 w-full h-full object-cover opacity-50" />
-        <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-green-900/30"></div>
+        <img :src="image6" alt="Fondo" class="absolute inset-0 w-screen h-screen object-cover opacity-50" />
 
         <!-- Contenido principal -->
         <div class="relative z-10 text-center space-y-16">
@@ -43,8 +41,5 @@ const playSoundAndGo = () => {
                 ▶ EMPEZAR ◀
             </button>
         </div>
-
-        <!-- Imagen decorativa inferior -->
-        <img :src="pngwing3" alt="Decoración" class="absolute bottom-0 left-0 w-full max-h-[50vh] object-contain opacity-80" />
     </div>
 </template>

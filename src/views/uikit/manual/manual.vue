@@ -1,21 +1,36 @@
 <script setup>
-import image6 from '@/assets/image6.png';
-import planet from '@/assets/pngwing2.png';
-
+import image from '@/assets/manualbg.png';
 // 👇 importa la fuente que descargaste con npm
 import '@fontsource/press-start-2p';
+import bS from '@/assets/bS.mp3';
+import { onBeforeUnmount, onMounted } from 'vue'; // audio
+
+let audio = null;
+
+onMounted(() => {
+    audio = new Audio(bS);
+    audio.loop = true;
+    audio.volume = 0.4; //
+    audio.play().catch((err) => {
+        console.warn('El navegador bloqueó autoplay, se necesita interacción:', err);
+    });
+});
+
+onBeforeUnmount(() => {
+    if (audio) {
+        audio.pause();
+        audio = null;
+    }
+});
 </script>
 
 <template>
     <div class="manual-container">
         <!-- Fondo -->
         <div class="background">
-            <img :src="image6" alt="Fondo" />
+            <img :src="image" alt="Fondo" />
             <div class="overlay"></div>
         </div>
-
-        <!-- Planeta lateral -->
-        <img :src="planet" alt="Planeta" class="planet" />
 
         <!-- Contenido -->
         <h1 class="titulo md:text-7xl">Manual de la Nave</h1>

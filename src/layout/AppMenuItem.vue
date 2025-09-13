@@ -159,4 +159,37 @@ li.layout-root-menuitem > router-link,
 li.layout-root-menuitem ul.layout-submenu {
     background: transparent !important;
 }
+
+/* Estilo base para los enlaces del menú */
+
+/* Hover: fondo gris y texto gris claro */
+.layout-menu li a:hover {
+    background-color: rgba(128, 128, 128, 0.2); /* gris translúcido */
+    color: #d1d1d1; /* gris claro */
+}
+
+/* Estado activo con Vue Router */
+.layout-menu li a.router-link-active {
+    background-color: rgba(128, 128, 128, 0.4); /* gris más marcado */
+    color: #15ff73; /* verde de tu tema */
+    font-weight: bold;
+}
+
+/* Color para el label "Principal" */
+.layout-menu .principal {
+    color: #15ff73; /* Verde neón */
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 12px 0 6px 12px;
+    font-size: 14px;
+}
+
+/* Color para el label "Apartados" */
+.layout-menu .apartados {
+    color: #ffb347; /* Naranja */
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 12px 0 6px 12px;
+    font-size: 14px;
+}
 </style>

@@ -1,6 +1,9 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 import '@fontsource/press-start-2p';
+import soundWin from '@/assets/soundWin.mp3';
+import router from '@/router';
+import bS from '@/assets/soundm1.mp3'; // audio
 
 const comando = ref('');
 const output = ref([]);
@@ -38,6 +41,17 @@ const ejecutarComando = async () => {
         completada.value = true;
         mostrarPopup.value = true; // activa modal
 
+        if (winSound) {
+            winSound.currentTime = 0;
+            winSound.play().catch((err) => console.warn('Autoplay bloqueado:', err));
+        }
+        setTimeout(() => {
+            mostrarPopup.value = false;
+            router.push({ path: `/mision/2` }).then(() => {
+                router.go(0); // recarga la página
+            });
+        }, 2500);
+
         try {
             const token = localStorage.getItem('access_token');
 
@@ -50,7 +64,7 @@ const ejecutarComando = async () => {
                 },
                 body: JSON.stringify({
                     id_usuario: usuarioId.value,
-                    id_mision: 7, // 👈 misión actual
+                    id_mision: 8, // 👈 misión actual
                     estado: 'completada',
                     intentos: intentos.value
                 })
@@ -68,9 +82,21 @@ const ejecutarComando = async () => {
     comando.value = '';
 };
 
+let winSound = null;
+let audio = null;
+
 // Cargar misión actual y usuario al montar
 onMounted(async () => {
+    audio = new Audio(bS);
+    audio.loop = true;
+    audio.volume = 0.4; //
+    audio.play().catch((err) => {
+        console.warn('El navegador bloqueó autoplay, se necesita interacción:', err);
+    });
+
     try {
+        winSound = new Audio(soundWin);
+        winSound.volume = 0.7; // volumen moderado
         const token = localStorage.getItem('access_token');
 
         // 🔑 Obtener usuario
@@ -95,18 +121,22 @@ onMounted(async () => {
         feedback.value.push({ tipo: 'error', msg: '❌ No se pudo cargar misión o usuario.' });
     }
 });
+
+onBeforeUnmount(() => {
+    if (audio) {
+        audio.pause();
+        audio = null;
+    }
+});
 </script>
 
 <template>
     <div :class="$style.mainscreen">
         <!-- Fondo -->
         <div :class="$style.background">
-            <img src="@/assets/image6.png" alt="Fondo" />
+            <img src="@/assets/15.png" alt="Fondo" />
             <div :class="$style.overlay"></div>
         </div>
-
-        <!-- Planeta lateral -->
-        <img :class="$style.pngwing2Icon" alt="Planeta" src="@/assets/pngwing2.png" />
 
         <!-- Contenedor principal -->
         <div :class="$style.cardParent">
@@ -288,7 +318,6 @@ onMounted(async () => {
     font-weight: bold;
     font-size: clamp(0.8rem, 2vw, 1rem);
     color: white;
-
 }
 
 /* Tarjetas contenedoras */

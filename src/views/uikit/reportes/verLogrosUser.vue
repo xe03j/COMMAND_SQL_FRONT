@@ -1,7 +1,8 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 import axios from 'axios';
-import image6 from '@/assets/image6.png';
+import image6 from '@/assets/dashbg.png';
+import bS from '@/assets/bS.mp3'; // audio
 
 const usuario = ref(null);
 const logros = ref([]);
@@ -46,8 +47,23 @@ const obtenerEstadisticas = async (id_usuario) => {
     }
 };
 
+let audio = null;
+
 onMounted(() => {
     obtenerUsuario();
+    audio = new Audio(bS);
+    audio.loop = true;
+    audio.volume = 0.4; //
+    audio.play().catch((err) => {
+        console.warn('El navegador bloqueó autoplay, se necesita interacción:', err);
+    });
+});
+
+onBeforeUnmount(() => {
+    if (audio) {
+        audio.pause();
+        audio = null;
+    }
 });
 </script>
 
